@@ -116,8 +116,9 @@
     .area-hdr-left { display:flex; align-items:center; gap:0.5rem; }
     .area-rank { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted2); }
     .area-name { font-size:14px; font-weight:500; color:var(--text); }
-    .area-hdr-right { display:flex; align-items:center; gap:0.6rem; flex-shrink:0; }
-    .area-cost-sm { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); }
+    .area-hdr-right { display:flex; flex-direction:column; align-items:flex-end; gap:0.4rem; flex-shrink:0; max-width:50%; }
+    .area-hdr-badges { display:flex; align-items:center; gap:0.4rem; flex-wrap:nowrap; }
+    .area-cost-sm { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); white-space:nowrap; }
     .expand-btn { font-size:11px; color:var(--muted); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:3px 8px; white-space:nowrap; transition:all 0.15s; background:transparent; cursor:pointer; font-family:'Inter',sans-serif; }
     .expand-btn:hover { border-color:var(--gold-dim); color:var(--text); }
     .expand-btn.open { border-color:var(--gold-dim); color:var(--gold); }
@@ -539,7 +540,7 @@ emailjs.init(EJS_PUBLIC_KEY);
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
   { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
-  { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 3% av omsättningen vid beslutsoklarhet.' },
+  { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 3% av omsättningen vid beslutsoklarhet.' },
   { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Högst någon dag','Någon vecka','Någon månad','Flera månader','År'], note:'Beräknas tillsammans med nästa fråga: timpris × 8h × andel av dagen × veckor per år.' },
   { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Kombineras med föregående fråga för att ge en trovärdig kostnad.' },
   { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
@@ -548,7 +549,7 @@ const QS = [
   { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 15% av omsättningen vid konsekvent underprissättning.' },
   { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på antal partners × andel dränerande (batteriet) × timpris × timmar per vecka (0–4h beroende på svar).' },
   { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar eller justerar det till något hållbart?', labels:['Några dagar','Några veckor','Någon månad','Flera månader','År'], note:'Baserat på antal partners × timpris × veckor kvar × 2h spilltid per vecka.' },
-  { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 20% mer betalt möjligt om självbilden inte sätter taket. Baserat på timpris × total arbetstid.' },
+  { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Nästan aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 20% mer betalt möjligt om självbilden inte sätter taket. Baserat på timpris × total arbetstid.' },
   { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde dit du ville?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på ofokuserade timmar × timpris. Tid som jobbas hårt utan riktning är förlorad kapacitet.' },
   { ai:6, q:'Hur ofta är du i ett läge där arbetet bara flödar —\ndär du är helt närvarande och presterar på topp?', labels:['Dagligen','Några gånger i veckan','Någon gång i veckan','Sällan','Nästan aldrig'], note:'Baserat på Salesforce 2024: 1,5h/8h = 19% av omsättningen. Brist på flöde är den centrala orsaken till fokustapp.' },
   { ai:6, q:'Hur annorlunda är du som ledare och beslutsfattare när du är under press — jämfört med när du är på topp?', labels:['Nästan ingen skillnad','Liten skillnad','Märkbar skillnad','Stor skillnad','Helt olika personer'], note:'Baserat på ofokuserade timmar × timpris × 1,5 (spilleffekt på dem du arbetar med).' },
@@ -882,17 +883,19 @@ function buildResults() {
     </div>`;
     list.innerHTML+=`<div class="area-card">
       <div class="area-card-hdr" onclick="toggleArea(${rank})">
-        <div class="area-hdr-left">
-          <span class="area-rank">${rank+1}.</span>
-          <div>
+        <div class="area-hdr-row1">
+          <div class="area-hdr-left">
+            <span class="area-rank">${rank+1}.</span>
             <span class="area-name">${area.name}</span>
-            ${hdrTagHtml ? `<div class="area-hdr-tags">${hdrTagHtml}</div>` : ''}
           </div>
-        </div>
-        <div class="area-hdr-right">
-          <span class="area-cost-sm">${fmt(area.cost)} / år</span>
           <span class="zone-badge ${zone.cls}">${zone.label}</span>
-          <button class="expand-btn" id="arr-${rank}">Visa svar</button>
+        </div>
+        <div class="area-hdr-row2">
+          <div class="area-hdr-tags">${hdrTagHtml}</div>
+          <div class="area-hdr-right2">
+            <span class="area-cost-sm">${fmt(area.cost)} / år</span>
+            <button class="expand-btn" id="arr-${rank}">Visa svar</button>
+          </div>
         </div>
       </div>
       <div class="bar-track" style="margin:0.6rem 0 0.85rem"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
