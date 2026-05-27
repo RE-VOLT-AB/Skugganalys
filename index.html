@@ -117,8 +117,9 @@
     .area-name { font-size:14px; font-weight:500; color:var(--text); }
     .area-hdr-right { display:flex; align-items:center; gap:0.6rem; flex-shrink:0; }
     .area-cost-sm { font-family:'DM Mono',monospace; font-size:12px; color:var(--muted); }
-    .expand-arrow { font-size:10px; color:var(--muted2); transition:transform 0.2s; }
-    .expand-arrow.open { transform:rotate(180deg); }
+    .expand-btn { font-size:11px; color:var(--muted); border:1px solid rgba(255,255,255,0.12); border-radius:6px; padding:3px 8px; white-space:nowrap; transition:all 0.15s; background:transparent; cursor:pointer; font-family:'Inter',sans-serif; }
+    .expand-btn:hover { border-color:var(--gold-dim); color:var(--text); }
+    .expand-btn.open { border-color:var(--gold-dim); color:var(--gold); }
     .area-card-body { display:none; padding-bottom:1.25rem; }
     .area-card-body.open { display:block; animation:fadeUp 0.2s ease; }
 
@@ -132,8 +133,9 @@
     .bar-fill { height:100%; border-radius:2px; background:var(--gold); transition:width 1.1s cubic-bezier(0.16,1,0.3,1); }
     .tag-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1rem; }
     .tag { font-size:10px; padding:2px 8px; border-radius:4px; }
-    .tag-e { background:rgba(255,204,0,0.08); border:1px solid rgba(255,204,0,0.25); color:rgba(255,204,0,0.75); }
-    .tag-r { background:var(--red-bg); border:1px solid var(--red-border); color:var(--red); }
+    .tag-e { background:rgba(255,204,0,0.1); border:1px solid rgba(255,204,0,0.3); color:#ffcc00; }
+    .tag-r { background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); color:#4ade80; }
+    .tag-l { background:rgba(249,115,22,0.1); border:1px solid rgba(249,115,22,0.3); color:#f97316; }
 
     /* PER-QUESTION DETAIL */
     .q-detail { padding:0.75rem 0; border-top:1px solid rgba(255,255,255,0.05); }
@@ -181,10 +183,12 @@
     .q-info-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
     .q-info-btn.active { border-color:var(--gold-dim); color:var(--gold); background:rgba(255,204,0,0.08); }
 
-    @keyframes tagPulse { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(255,204,0,0.3); } }
-    @keyframes tagPulseRed { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(220,80,80,0.3); } }
-    .tag-pulse-e { animation:tagPulse 2.5s ease-in-out infinite; }
-    .tag-pulse-r { animation:tagPulseRed 2.5s ease-in-out infinite; }
+    @keyframes tagPulse  { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(255,204,0,0.3); } }
+    @keyframes tagPulseR { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(74,222,128,0.3); } }
+    @keyframes tagPulseL { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(249,115,22,0.3); } }
+    .tag-pulse-e { animation:tagPulse  2.5s ease-in-out infinite; }
+    .tag-pulse-r { animation:tagPulseR 2.5s ease-in-out infinite; }
+    .tag-pulse-l { animation:tagPulseL 2.5s ease-in-out infinite; }
     .area-hdr-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:0.35rem; }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
@@ -242,11 +246,7 @@
       <label class="input-label">Timmar i arbete per vecka</label>
       <div class="input-row"><input type="number" class="input-field" id="i-h" value="50" min="1" max="168"/><span class="input-unit">tim / v</span></div>
     </div>
-    <div class="input-group">
-      <label class="input-label">Antal anställda</label>
-      <div class="input-row"><input type="number" class="input-field" id="i-a" value="2" min="0"/></div>
-    </div>
-    <div class="input-group">
+<div class="input-group">
       <label class="input-label">Aktiva samarbetspartners</label>
       <div class="input-row"><input type="number" class="input-field" id="i-p" value="3" min="0"/></div>
     </div>
@@ -362,19 +362,15 @@
 
 <!-- RESULTS -->
 <div id="s-results" class="wrap" style="display:none">
-  <!-- Top area -->
+  <!-- Top card: totals + category impact -->
   <div class="card gold-border screen-anim">
-    <div class="res-hero">
-      <div class="res-hero-label">Ditt dyraste mönster just nu</div>
-      <div class="res-hero-area" id="r-top-name"></div>
-      <div class="res-hero-cost" id="r-top-cost"></div>
+    <div style="text-align:center;padding-bottom:1.25rem;border-bottom:1px solid var(--border);margin-bottom:1.25rem">
+      <div class="eyebrow" style="margin-bottom:0.5rem">Total uppskattad kostnad per år</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--gold);line-height:1.1;margin-bottom:0.5rem" id="r-total-cost"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--muted);margin-bottom:1rem" id="r-total-time"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;text-align:center" id="r-time-breakdown"></div>
     </div>
-    <div class="divider" style="margin:1.25rem 0 1rem"></div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-      <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Total uppskattad kostnad per år</span>
-      <span style="font-family:'DM Mono',monospace;font-size:1.1rem;color:var(--text)" id="r-total-cost"></span>
-    </div>
-    <p style="font-size:13px;line-height:1.75" id="r-top-desc"></p>
+    <div id="r-category-impact"></div>
   </div>
 
   <!-- All areas accordion -->
@@ -416,9 +412,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
-const EJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-const EJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EJS_PUBLIC_KEY  = '1Qm1eUWAF1kslBlCH';
+const EJS_SERVICE_ID  = 'service_ue4s2ke';
+const EJS_TEMPLATE_ID = 'template_u0vh9hj';
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
@@ -439,31 +435,31 @@ const QS = [
 ];
 
 const AREAS = [
-  { name:'Oklart', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}],
+  { name:'Oklart', tags:[{cls:'tag-e',t:'⚡ Energi'}],
     desc:'Otydlighet i beslut kostar mer än felaktiga beslut — det kostar tid och energi på omtag och kan skapa relationer som tyst anpassar sig till oklarheten utan att säga något.',
     cal:'Under en kalibrering synliggör vi varifrån dina beslut egentligen kommer.',
     tip:'Fundera på om dina senaste beslut tagits från rädsla, passion eller yttre press.' },
-  { name:'Omständigheter', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Livsglädje'}],
+  { name:'Omständigheter', tags:[{cls:'tag-e',t:'⚡ Energi'},{cls:'tag-l',t:'🌟 Livsglädje'}],
     desc:'Att stanna i något du vet inte fungerar kostar dig inte bara tid — det kostar energi, livsglädje och ibland de relationer som förväntar sig en autentisk partner.',
     cal:'Under en kalibrering undersöker vi vad som håller dig kvar.',
     tip:'Fundera på vad du skulle göra imorgon om inte omständigheter kunde påverka din plan.' },
-  { name:'Sökandet', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}],
+  { name:'Sökandet', tags:[{cls:'tag-e',t:'⚡ Energi'}],
     desc:'Att byta riktning gång på gång kostar mer än pengar och tid — både ditt undermedvetna och de runt dig börjar successivt sluta tro på att du vet vart du är på väg.',
     cal:'Under en kalibrering undersöker vi vad du egentligen letar efter.',
     tip:'Fundera på om du söker för att du saknar något eller om det bara är ett tryggt sätt att slippa ta ett jobbigt beslut.' },
-  { name:'Andra', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+  { name:'Andra', tags:[{cls:'tag-e',t:'⚡ Energi'},{cls:'tag-r',t:'💚 Relationer'}],
     desc:'När andras förväntningar styr dina beslut och priser vet du till slut inte var du slutar och var de börjar — och det kostar dig mer än potentiellt förlorade intäkter.',
     cal:'Under en kalibrering tittar vi på varför du låter andra styra dina beslut och vad du ger upp och vad du faktiskt får tillbaka från att agera så.',
     tip:'Fundera på ett beslut du skjutit upp — vems obehag undviker du egentligen genom att inte bestämma dig?' },
-  { name:'Samarbeten', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+  { name:'Samarbeten', tags:[{cls:'tag-e',t:'⚡ Energi'},{cls:'tag-r',t:'💚 Relationer'}],
     desc:'Samarbeten som passerat sitt datum eller som skapades ur fel tillstånd kostar mer än din energi varje vecka — och att avsluta eller justera dem kan ibland kännas som att svika eller överge.',
     cal:'Under en kalibrering kartlägger vi för och nackdelar, vad det faktiskt kostar dig och vad som håller dig kvar i det även om du påstår dig vilja något annat.',
     tip:'Fundera på vilket samarbete du skulle ha avslutat för länge sedan om det inte kändes så jobbigt.' },
-  { name:'Jag', tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Energi / Livsglädje'}],
+  { name:'Jag', tags:[{cls:'tag-e',t:'⚡ Energi'},{cls:'tag-l',t:'🌟 Livsglädje'}],
     desc:'Att arbeta hårdare än nödvändigt för att bevisa något som redan är bevisat är ett av de tystaste och dyraste mönstren — det syns sällan utifrån men kostar inifrån.',
     cal:'Under en kalibrering undersöker vi vilken självbild som ligger och arbetar i bakgrunden och sätter taket för vad du tar betalt och gör.',
     tip:'Fundera på vad du skulle vilja göra och även ha i arvode för det om du visste att ingen kunde säga nej.' },
-  { name:'Flödet', tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+  { name:'Flödet', tags:[{cls:'tag-e',t:'⚡ Energi'},{cls:'tag-r',t:'💚 Relationer'}],
     desc:'Glappet mellan dig på topp och dig under press kostar mer än du märker — det syns i dina beslut, dina relationer och dina affärer långt innan du själv ser det.',
     cal:'Under en kalibrering kartlägger vi vad som föregår ditt flöde och vad som bryter det.',
     tip:'Fundera på när du senast var i flöde — vad gjorde du då, lyssnade du på något särskilt, var du på en särskild plats, hade du några särskilda kläder, drack du något särskilt osv?' }
@@ -540,8 +536,7 @@ function openModal() {
     ['Omsättning per år', (rawVal('i-s')||1500000).toLocaleString('sv-SE')+' kr'],
     ['Timpris', (rawVal('i-t')||700).toLocaleString('sv-SE')+' kr / tim'],
     ['Timmar per vecka', numVal('i-h',50)+' tim'],
-    ['Anställda', numVal('i-a',2)],
-    ['Samarbetspartners', numVal('i-p',3)],
+['Samarbetspartners', numVal('i-p',3)],
     ['Ofokuserade tim/v', numVal('i-sub',4)+' tim'],
     ['Energidränage', battValue+'%'],
   ];
@@ -554,7 +549,7 @@ $('modal-confirm').addEventListener('click',function(e){ if(e.target===this) clo
 
 // ─── QUIZ ────────────────────────────────────────────────────────────────────
 function startQuiz() {
-  ud={ s:rawVal('i-s')||1500000, t:rawVal('i-t')||700, h:numVal('i-h',50), a:numVal('i-a',2), p:numVal('i-p',3), sub:numVal('i-sub',4), slE:battValue/100 };
+  ud={ s:rawVal('i-s')||1500000, t:rawVal('i-t')||700, h:numVal('i-h',50), p:numVal('i-p',3), sub:numVal('i-sub',4), slE:battValue/100 };
   curQ=0; answers=new Array(14).fill(null);
   goTo('s-quiz'); renderQ();
 }
@@ -637,7 +632,24 @@ function calcCosts(d, ans) {
     const idxs=QS.reduce((a,q,i)=>{ if(q.ai===ai)a.push(i); return a; },[]);
     return idxs.reduce((sum,i)=>sum+qc[i],0);
   });
-  return {qc, ac};
+
+  // Time loss calculation (hours/year from time-based questions)
+  const t_veckor=[0,2,4,16,40][ans[2]-1];
+  const t_dag=[0.05,0.15,0.30,0.50,0.70][ans[3]-1];
+  const th_omst   = 8 * t_dag * t_veckor;
+  const th_sam9   = d.p * (1-d.slE) * Math.max(0.25,(ans[8]-1)) * 48;
+  const th_sam10  = d.p * [1,2,4,16,40][ans[9]-1] * 2;
+  const th_jag11  = d.h * 0.20 * 48 * Math.max(0.05,(ans[10]-1)/4);
+  const th_jag12  = d.sub * 48 * Math.max(0.05,(ans[11]-1)/4);
+  const th_sok5   = d.sub * 48 * 0.20 * Math.max(0.05,(ans[4]-1)/4);
+  const th_flode14= d.sub * 48 * 1.5 * Math.max(0.05,(ans[13]-1)/4);
+  const t_ofokus  = Math.round(th_jag12 + th_flode14 + th_sok5);
+  const t_goraom  = Math.round(th_omst + th_jag11);
+  const t_felrikt = Math.round(th_sam9 + th_sam10);
+  const totalHours = t_ofokus + t_goraom + t_felrikt;
+  const totalWeeks = (totalHours / 40).toFixed(1);
+
+  return {qc, ac, totalHours, totalWeeks, t_ofokus, t_goraom, t_felrikt};
 }
 
 function sendEmailBg() {
@@ -646,24 +658,63 @@ function sendEmailBg() {
   const ranked=[...cachedResults.areaResults].sort((a,b)=>b.cost-a.cost);
   const ranking=ranked.map((a,i)=>`${i+1}. ${a.name}: ${fmt(a.cost)}/år`).join('\n');
   emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
-    to_email:userEmail, top_area:ranked[0].name, top_cost:fmt(ranked[0].cost),
-    full_ranking:ranking, omsattning:fmt(ud.s), timpris:ud.t+' kr/h',
+    to_email:     userEmail,
+    top_area:     ranked[0].name,
+    top_cost:     fmt(ranked[0].cost),
+    tidsforlust:  `${cachedResults.totalHours} timmar (${cachedResults.totalWeeks} v) — Ofokuserat: ${cachedResults.t_ofokus}h / Göra om: ${cachedResults.t_goraom}h / Fel riktning: ${cachedResults.t_felrikt}h`,
+    full_ranking: ranking,
+    omsattning:   fmt(ud.s),
+    timpris:      ud.t + ' kr/h',
+    timmar:       ud.h + ' tim/v',
+partners:     ud.p,
+    ofokuserade:  ud.sub + ' tim/v',
+    energidranage:Math.round((1-ud.slE)*100) + '% dränerande',
   }).catch(()=>{});
 }
 
 // ─── BUILD RESULTS ───────────────────────────────────────────────────────────
 function buildResults() {
-  const {qc,ac}=calcCosts(ud,answers);
+  const {qc,ac,totalHours,totalWeeks,t_ofokus,t_goraom,t_felrikt}=calcCosts(ud,answers);
   const maxAc=Math.max(...ac,1);
   const areaResults=AREAS.map((area,ai)=>({...area,cost:Math.max(0,ac[ai]),pct:Math.max(0,ac[ai])/maxAc}));
-  cachedResults={areaResults, qc};
+  cachedResults={areaResults, qc, totalHours, totalWeeks, t_ofokus, t_goraom, t_felrikt};
   const sorted=[...areaResults.entries()].sort((a,b)=>b[1].cost-a[1].cost);
+
+  // Category impact counts (Måttlig+ only)
+  const catCount={e:0,r:0,l:0};
+  sorted.forEach(([,area])=>{
+    if(area.pct>=0.25) area.tags.forEach(t=>{
+      if(t.cls==='tag-e') catCount.e++;
+      if(t.cls==='tag-r') catCount.r++;
+      if(t.cls==='tag-l') catCount.l++;
+    });
+  });
+  const cats=[
+    {sym:'⚡',name:'Energi',   count:catCount.e, col:'#ffcc00'},
+    {sym:'💚',name:'Relationer',count:catCount.r, col:'#4ade80'},
+    {sym:'🌟',name:'Livsglädje',count:catCount.l, col:'#f97316'},
+  ];
+  $('r-category-impact').innerHTML=cats.filter(c=>c.count>0).map(c=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="display:flex;align-items:center;gap:0.6rem">
+        <span style="font-size:16px">${c.sym}</span>
+        <span style="font-size:13px;color:${c.col};font-weight:500">${c.name} påverkas</span>
+      </div>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:${c.col}">${c.count} av 7 områden</span>
+    </div>`).join('');
   const [topIdx,top]=sorted[0];
   const totalCost = areaResults.reduce((s,a)=>s+a.cost,0);
-  $('r-top-name').textContent=top.name;
-  $('r-top-cost').textContent=fmt(top.cost)+' / år';
-  $('r-top-desc').textContent=top.desc;
+
   $('r-total-cost').textContent=fmt(totalCost);
+  $('r-total-time').textContent=`${cachedResults.totalHours} timmar / ${cachedResults.totalWeeks} arbetsveckor`;
+  $('r-time-breakdown').innerHTML=[
+    {label:'Ofokuserat',val:cachedResults.t_ofokus},
+    {label:'Göra om',   val:cachedResults.t_goraom},
+    {label:'Fel riktning',val:cachedResults.t_felrikt},
+  ].map(b=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:0.6rem 0.4rem">
+    <div style="font-family:'DM Mono',monospace;font-size:1rem;color:var(--text)">${b.val}h</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:0.2rem;letter-spacing:0.04em">${b.label}</div>
+  </div>`).join('');
 
   const list=$('r-areas');
   list.innerHTML='';
@@ -695,7 +746,7 @@ function buildResults() {
     }).join('');
 
     const showTags = area.pct >= 0.25;
-    const hdrTagHtml = showTags ? area.tags.map(t=>`<span class="tag ${t.cls} ${t.cls==='tag-e'?'tag-pulse-e':'tag-pulse-r'}" style="font-size:9px;padding:2px 6px">${t.t}</span>`).join('') : '';
+    const hdrTagHtml = showTags ? area.tags.map(t=>`<span class="tag ${t.cls} ${t.cls==='tag-e'?'tag-pulse-e':t.cls==='tag-r'?'tag-pulse-r':'tag-pulse-l'}" style="font-size:9px;padding:2px 6px">${t.t}</span>`).join('') : '';
     const showTexts = area.pct >= 0.25;
     const textsHtml = `<div class="area-zone-text" style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.05)">
       <p style="font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:0.6rem">${area.desc}</p>
@@ -717,7 +768,7 @@ function buildResults() {
         <div class="area-hdr-right">
           <span class="area-cost-sm">${fmt(area.cost)} / år</span>
           <span class="zone-badge ${zone.cls}">${zone.label}</span>
-          <span class="expand-arrow" id="arr-${rank}">▼</span>
+          <button class="expand-btn" id="arr-${rank}">Visa svar</button>
         </div>
       </div>
       <div class="bar-track" style="margin:0.5rem 0 0.75rem"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
@@ -737,9 +788,10 @@ function buildResults() {
 }
 
 function toggleArea(rank) {
-  const body=$(`body-${rank}`), arr=$(`arr-${rank}`);
+  const body=$(`body-${rank}`), btn=$(`arr-${rank}`);
   const open=body.classList.toggle('open');
-  arr.classList.toggle('open',open);
+  btn.classList.toggle('open',open);
+  btn.textContent=open?'Dölj svar':'Visa svar';
 }
 
 // ─── INFO TOGGLE ─────────────────────────────────────────────────────────────
