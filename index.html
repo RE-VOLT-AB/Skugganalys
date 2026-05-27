@@ -539,11 +539,11 @@ emailjs.init(EJS_PUBLIC_KEY);
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
-  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
+  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Troligtvis inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
   { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 3% av omsättningen vid beslutsoklarhet.' },
   { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Högst någon dag','Någon vecka','Någon månad','Flera månader','År'], note:'Beräknas tillsammans med nästa fråga: timpris × 8h × andel av dagen × veckor per år.' },
-  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Kombineras med föregående fråga för att ge en trovärdig kostnad.' },
-  { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
+  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Beräknas tillsammans med föregående fråga. Kostnaden visas som kombinerad summa för Omständigheter.' },
+  { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Troligtvis inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
   { ai:2, q:'Hur ofta får du frågor eller reaktioner som visar att folk inte riktigt förstår vad du gör eller vem du gör det för?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 2% av omsättningen vid konsekvent otydlighet utåt.' },
   { ai:3, q:'Hur ofta skjuter du upp beslut för att slippa hantera någon annans reaktion på det?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 9% av omsättningen (ungefär en månads försenad potential per år).' },
   { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 15% av omsättningen vid konsekvent underprissättning.' },
@@ -859,7 +859,7 @@ function buildResults() {
         <div class="q-detail-row">
           <span class="q-detail-ans">${q.labels[ans-1]}</span>
           <div style="display:flex;align-items:center;gap:4px">
-            <span class="q-detail-cost">${isOmst&&qi===3?'(kombinerad)':fmt(cost)}</span>
+            <span class="q-detail-cost">${isOmst?fmt(qc[2]+qc[3]):fmt(cost)}</span>
             <button class="q-info-btn" id="${btnId}" onclick="toggleNote('${noteId}','${btnId}')" title="Visa beräkning">i</button>
           </div>
         </div>
