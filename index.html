@@ -13,14 +13,14 @@
       --bg: #0f1a10; --card: #1e2a1e;
       --border: rgba(255,204,0,0.13); --border-strong: rgba(255,204,0,0.45);
       --gold: #ffcc00; --gold-dim: rgba(255,204,0,0.35); --gold-faint: rgba(255,204,0,0.07);
-      --text: #ffffff; --muted: rgba(255,255,255,0.55); --muted2: rgba(255,255,255,0.3);
+      --text: #ffffff; --muted: rgba(255,255,255,0.72); --muted2: rgba(255,255,255,0.52);
       --btn-dark: #1a1200; --red: #e07070; --red-bg: rgba(220,80,80,0.1); --red-border: rgba(220,80,80,0.3);
     }
     html { scroll-behavior: smooth; }
     body { font-family:'Inter',sans-serif; background:var(--bg); min-height:100vh; color:var(--text); display:flex; flex-direction:column; align-items:center; padding:0 1rem 6rem; }
     .header { width:100%; max-width:540px; display:flex; justify-content:space-between; align-items:center; padding:1.5rem 0 1rem; }
     .logo-svg { height:26px; width:auto; display:block; }
-    .header-tag { font-size:11px; color:var(--muted2); letter-spacing:0.08em; text-transform:uppercase; }
+    .header-tag { font-size:11px; color:rgba(255,255,255,0.6); letter-spacing:0.08em; text-transform:uppercase; }
     .wrap { width:100%; max-width:540px; }
     .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2rem; }
     .card.gold-border { border-color:rgba(255,204,0,0.5); background:rgba(255,204,0,0.03); }
@@ -43,10 +43,7 @@
     .input-field::-webkit-inner-spin-button, .input-field::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
     .input-unit { padding:0 1rem 0 0; font-size:12px; color:var(--muted); white-space:nowrap; }
     .input-note { font-size:11px; color:var(--muted2); margin-top:0.35rem; line-height:1.5; }
-    .input-note a { color:rgba(255,204,0,0.6); }
-    .computed-row { display:flex; justify-content:space-between; align-items:center; background:rgba(255,204,0,0.04); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.9rem; margin:0.75rem 0 0.5rem; }
-    .computed-label { font-size:12px; color:var(--muted); }
-    .computed-value { font-family:'DM Mono',monospace; font-size:13px; color:var(--gold); }
+    .input-note a { color:rgba(255,204,0,0.85); text-decoration:underline; text-underline-offset:2px; }
 
     /* BATTERY */
     .battery-wrap { margin-bottom:1.1rem; }
@@ -59,13 +56,13 @@
     .batt-tick { position:absolute; left:0; right:0; height:1px; background:rgba(255,255,255,0.07); pointer-events:none; }
     .battery-fill { position:absolute; bottom:0; left:0; right:0; transition:height 0.15s ease, background-color 0.3s ease; border-radius:0 0 8px 8px; }
     .battery-labels-side { display:flex; flex-direction:column; justify-content:space-between; height:167px; }
-    .batt-lbl { font-size:11px; color:var(--muted2); line-height:1.4; }
+    .batt-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
 
     /* PROGRESS */
     .progress-wrap { margin-bottom:1.75rem; }
     .progress-track { height:2px; background:rgba(255,255,255,0.07); border-radius:2px; overflow:hidden; }
     .progress-fill { height:100%; background:var(--gold); border-radius:2px; transition:width 0.4s ease; }
-    .progress-meta { display:flex; justify-content:space-between; margin-top:0.55rem; font-size:11px; color:var(--muted2); }
+    .progress-meta { display:flex; justify-content:space-between; margin-top:0.55rem; font-size:11px; color:var(--muted); }
 
     /* QUESTION */
     .q-area-tag { display:inline-block; font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-dim); border-radius:4px; padding:3px 8px; margin-bottom:1rem; }
@@ -101,10 +98,6 @@
     .loading-main { font-family:'DM Serif Display',serif; font-size:1.6rem; color:var(--text); min-height:2.5rem; transition:opacity 0.45s ease; }
     .loading-sub { font-size:13px; color:var(--muted); margin-top:0.9rem; max-width:280px; line-height:1.7; min-height:2.5rem; transition:opacity 0.45s ease; }
 
-    /* EMAIL SCREEN */
-    #s-email .card { text-align:center; }
-    #s-email h2 { margin-bottom:0.5rem; }
-    #s-email p { margin-bottom:1.5rem; }
     .email-field { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:0.85rem 1rem; font-size:14px; color:var(--text); font-family:'Inter',sans-serif; outline:none; margin-bottom:0.65rem; transition:border-color 0.2s; }
     .email-field:focus { border-color:var(--gold-dim); }
     .email-field::placeholder { color:var(--muted2); }
@@ -130,7 +123,7 @@
     .area-card-body.open { display:block; animation:fadeUp 0.2s ease; }
 
     .zone-badge { font-size:11px; font-weight:500; padding:3px 9px; border-radius:4px; }
-    .zone-lag    { background:rgba(255,255,255,0.05); color:var(--muted2); }
+    .zone-lag    { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.55); }
     .zone-mattlig { background:rgba(255,204,0,0.08); color:rgba(255,204,0,0.55); }
     .zone-tydlig  { background:rgba(255,204,0,0.15); color:var(--gold); }
     .zone-hog     { background:rgba(255,120,0,0.15); color:#ffaa55; }
@@ -150,9 +143,9 @@
     .q-detail-cost { font-family:'DM Mono',monospace; font-size:12px; color:var(--gold); }
     .q-mini-bar { height:2px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden; margin-top:0.4rem; }
     .q-mini-fill { height:100%; background:var(--gold-dim); border-radius:2px; }
-    .assumption-note { font-size:11px; color:var(--muted2); line-height:1.55; margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid rgba(255,255,255,0.05); font-style:italic; }
+    .assumption-note { font-size:11px; color:var(--muted); line-height:1.55; margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid rgba(255,255,255,0.05); font-style:italic; }
     .area-rel { font-size:12px; color:var(--muted); line-height:1.65; margin-top:0.75rem; font-style:italic; }
-    .area-tip-txt { font-size:12px; color:var(--muted2); line-height:1.65; margin-top:0.35rem; }
+    .area-tip-txt { font-size:12px; color:var(--muted); line-height:1.65; margin-top:0.35rem; }
 
     /* EMAIL RESULT SECTION */
     .email-result-section { background:var(--gold-faint); border:1px solid var(--gold-dim); border-radius:16px; padding:1.75rem; margin-top:1rem; text-align:center; }
@@ -161,8 +154,8 @@
     .email-status { font-size:12px; color:var(--muted); margin-top:0.6rem; }
 
     .restart-section { text-align:center; padding:1.5rem 0; }
-    .restart-note { font-size:12px; color:var(--muted2); line-height:1.7; margin-bottom:0.75rem; }
-    .restart-link { font-size:12px; color:var(--muted2); cursor:pointer; text-decoration:underline; text-underline-offset:2px; background:none; border:none; font-family:'Inter',sans-serif; }
+    .restart-note { font-size:12px; color:var(--muted); line-height:1.7; margin-bottom:0.75rem; }
+    .restart-link { font-size:12px; color:var(--muted); cursor:pointer; text-decoration:underline; text-underline-offset:2px; background:none; border:none; font-family:'Inter',sans-serif; }
     .restart-link:hover { color:var(--muted); }
 
     /* MODAL */
@@ -212,8 +205,9 @@
     <div class="dividing-line"></div>
     <p>Det här är en analys som räknar på vad dina dolda mönster kostar dig idag. Med värden från din egen verksamhet och upplevelse gör vi en kvalificerad uppskattning av vad det innebär i tid, pengar, energi och relationer för dig.</p>
     <p style="margin-top:0.75rem">För att det här inte ska bli något som du bara reagerar på en gång skickas resultatet även till din e-postadress. För reaktion kommer det garanterat bli, och ditt nervsystem kommer kunna säga att det inte kan stämma. Men återkom till resultatet imorgon och se om inte det finns en del sanning i det du ser där.</p>
-    <p style="margin-top:0.75rem;font-size:12px;color:var(--muted2)">Tar 5 till 7 minuter.</p>
-    <button class="btn-primary" onclick="goTo('s-data')">Påbörja analysen</button>
+    <p style="margin-top:0.75rem;font-size:12px;color:var(--muted)">Tar 5 till 7 minuter.</p>
+    <input type="email" class="email-field" id="intro-email" placeholder="Din e-postadress" oninput="checkIntroEmail()" style="margin-top:1.5rem;margin-bottom:0"/>
+    <button class="btn-primary" id="intro-btn" onclick="goTo('s-data')" style="opacity:0.35;pointer-events:none;margin-top:0.75rem">Påbörja analysen</button>
   </div>
 </div>
 
@@ -242,10 +236,7 @@
       <label class="input-label">Aktiva samarbetspartners</label>
       <div class="input-row"><input type="number" class="input-field" id="i-p" value="3" min="0"/></div>
     </div>
-    <div class="computed-row">
-      <span class="computed-label">Ditt timpris i analysen</span>
-      <span class="computed-value" id="c-timpris">700 kr / tim</span>
-    </div>
+
 
     <div class="divider"></div>
     <div class="eyebrow">Kvalificerade antaganden</div>
@@ -274,7 +265,7 @@
         </div>
         <div class="battery-labels-side">
           <div class="batt-lbl">Energigivande<br><span style="font-size:10px">71–100%</span></div>
-          <div class="batt-lbl" style="color:rgba(255,204,0,0.4)">Blandat<br><span style="font-size:10px">30–70%</span></div>
+          <div class="batt-lbl" style="color:rgba(255,204,0,0.7)">Blandat<br><span style="font-size:10px">30–70%</span></div>
           <div class="batt-lbl">Tömmer mig<br><span style="font-size:10px">0–29%</span></div>
         </div>
       </div>
@@ -352,18 +343,6 @@
     </div>
     <div class="loading-main" id="load-main">Andas.</div>
     <div class="loading-sub" id="load-sub"></div>
-  </div>
-</div>
-
-<!-- EMAIL CAPTURE (before results) -->
-<div id="s-email" class="wrap screen-anim" style="display:none">
-  <div class="card" style="text-align:center">
-    <h2>Vart ska vi skicka din analys?</h2>
-    <p style="margin-bottom:1.5rem">Resultatet skickas till din e-post så att du kan återkomma till det — för reaktionen brukar förändras över tid.</p>
-    <input type="text"  class="email-field" id="e-name" placeholder="Ditt namn"/>
-    <input type="email" class="email-field" id="e-mail" placeholder="Din e-postadress"/>
-    <div id="e-error" style="font-size:12px;color:#e07070;min-height:1.2rem;margin-bottom:0.5rem"></div>
-    <button class="btn-primary" style="margin-top:0" onclick="submitEmail()">Visa mitt resultat</button>
   </div>
 </div>
 
@@ -471,8 +450,7 @@ function getZone(pct) {
 ['i-s','i-t'].forEach(id => {
   const el=$(id); if(!el) return;
   el.addEventListener('focus', function(){ this.value=String(rawVal(id)); this.select(); });
-  el.addEventListener('blur',  function(){ this.value=fmtInput(this.value); updateComputed(); });
-  el.addEventListener('input', updateComputed);
+  el.addEventListener('blur',  function(){ this.value=fmtInput(this.value); });
 });
 
 // ─── BATTERY ─────────────────────────────────────────────────────────────────
@@ -494,14 +472,21 @@ function setBatt(v) {
 })();
 
 // ─── COMPUTED ────────────────────────────────────────────────────────────────
-function updateComputed() {
-  const t=rawVal('i-t')||700;
-  $('c-timpris').textContent=t.toLocaleString('sv-SE')+' kr / tim';
+
+
+// ─── INTRO EMAIL ─────────────────────────────────────────────────────────────
+let userEmail = '';
+function checkIntroEmail() {
+  const val = $('intro-email').value.trim();
+  const valid = val.includes('@') && val.includes('.');
+  const btn = $('intro-btn');
+  btn.style.opacity = valid ? '1' : '0.35';
+  btn.style.pointerEvents = valid ? 'all' : 'none';
+  userEmail = valid ? val : '';
 }
-updateComputed();
 
 // ─── SCREENS ─────────────────────────────────────────────────────────────────
-const SCREENS=['s-intro','s-data','s-quiz','s-loading','s-email','s-results'];
+const SCREENS=['s-intro','s-data','s-quiz','s-loading','s-results'];
 function goTo(id) {
   SCREENS.forEach(s=>$(s).style.display='none');
   const el=$(id); el.style.display='block';
@@ -574,7 +559,7 @@ function showLoading() {
     setTimeout(()=>{
       mEl.textContent=LOAD_MSGS[i].main; sEl.textContent=LOAD_MSGS[i].sub;
       mEl.style.opacity='1'; sEl.style.opacity='1';
-      i++; i<LOAD_MSGS.length?setTimeout(step,2000):setTimeout(()=>goTo('s-email'),900);
+      i++; i<LOAD_MSGS.length?setTimeout(step,2000):setTimeout(buildResults,900);
     },380);
   }
   step();
@@ -615,24 +600,13 @@ function calcCosts(d, ans) {
   return {qc, ac};
 }
 
-// ─── EMAIL CAPTURE ────────────────────────────────────────────────────────────
-function submitEmail() {
-  const name=$('e-name').value.trim(), email=$('e-mail').value.trim(), errEl=$('e-error');
-  if(!name){ errEl.textContent='Fyll i ditt namn.'; return; }
-  if(!email||!email.includes('@')){ errEl.textContent='Fyll i en giltig e-postadress.'; return; }
-  errEl.textContent='';
-  buildResults();
-  sendEmailBg(name, email);
-}
-
-function sendEmailBg(name, email) {
-  if(!cachedResults) return;
+function sendEmailBg() {
+  if(!cachedResults||!userEmail) return;
   emailjs.init(EJS_PUBLIC_KEY);
   const ranked=[...cachedResults.areaResults].sort((a,b)=>b.cost-a.cost);
   const ranking=ranked.map((a,i)=>`${i+1}. ${a.name}: ${fmt(a.cost)}/år`).join('\n');
   emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
-    to_name:name, to_email:email,
-    top_area:ranked[0].name, top_cost:fmt(ranked[0].cost),
+    to_email:userEmail, top_area:ranked[0].name, top_cost:fmt(ranked[0].cost),
     full_ranking:ranking, omsattning:fmt(ud.s), timpris:ud.t+' kr/h',
   }).catch(()=>{});
 }
@@ -694,6 +668,7 @@ function buildResults() {
   });
 
   goTo('s-results');
+  sendEmailBg();
   setTimeout(()=>{
     document.querySelectorAll('.bar-fill, .q-mini-fill').forEach(el=>{ el.style.width=el.dataset.w; });
   },200);
