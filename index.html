@@ -184,8 +184,83 @@
     .q-info-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
     .q-info-btn.active { border-color:var(--gold-dim); color:var(--gold); background:rgba(255,204,0,0.08); }
 
+
+    /* COOKIE BANNER */
+    .cookie-banner {
+      position:fixed; bottom:0; left:0; right:0; z-index:200;
+      background:#1e2a1e; border-top:1px solid var(--border);
+      padding:1rem 1.25rem;
+      display:flex; flex-direction:column; gap:0.75rem;
+      animation:fadeUp 0.3s ease;
+    }
+    .cookie-banner p { font-size:12px; color:var(--muted); line-height:1.6; margin:0; }
+    .cookie-banner a { color:rgba(255,204,0,0.7); }
+    .cookie-btns { display:flex; gap:0.6rem; }
+    .cookie-accept {
+      flex:1; padding:0.7rem; background:var(--gold); border:none;
+      border-radius:8px; color:var(--btn-dark);
+      font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+      cursor:pointer;
+    }
+    .cookie-decline {
+      flex:1; padding:0.7rem; background:transparent;
+      border:1px solid rgba(255,255,255,0.12); border-radius:8px;
+      color:var(--muted); font-family:'Inter',sans-serif; font-size:13px;
+      cursor:pointer;
+    }
+
     @keyframes tagPulse  { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(255,204,0,0.3); } }
+
+    /* COOKIE BANNER */
+    .cookie-banner {
+      position:fixed; bottom:0; left:0; right:0; z-index:200;
+      background:#1e2a1e; border-top:1px solid var(--border);
+      padding:1rem 1.25rem;
+      display:flex; flex-direction:column; gap:0.75rem;
+      animation:fadeUp 0.3s ease;
+    }
+    .cookie-banner p { font-size:12px; color:var(--muted); line-height:1.6; margin:0; }
+    .cookie-banner a { color:rgba(255,204,0,0.7); }
+    .cookie-btns { display:flex; gap:0.6rem; }
+    .cookie-accept {
+      flex:1; padding:0.7rem; background:var(--gold); border:none;
+      border-radius:8px; color:var(--btn-dark);
+      font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+      cursor:pointer;
+    }
+    .cookie-decline {
+      flex:1; padding:0.7rem; background:transparent;
+      border:1px solid rgba(255,255,255,0.12); border-radius:8px;
+      color:var(--muted); font-family:'Inter',sans-serif; font-size:13px;
+      cursor:pointer;
+    }
+
     @keyframes tagPulseR { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(74,222,128,0.3); } }
+
+    /* COOKIE BANNER */
+    .cookie-banner {
+      position:fixed; bottom:0; left:0; right:0; z-index:200;
+      background:#1e2a1e; border-top:1px solid var(--border);
+      padding:1rem 1.25rem;
+      display:flex; flex-direction:column; gap:0.75rem;
+      animation:fadeUp 0.3s ease;
+    }
+    .cookie-banner p { font-size:12px; color:var(--muted); line-height:1.6; margin:0; }
+    .cookie-banner a { color:rgba(255,204,0,0.7); }
+    .cookie-btns { display:flex; gap:0.6rem; }
+    .cookie-accept {
+      flex:1; padding:0.7rem; background:var(--gold); border:none;
+      border-radius:8px; color:var(--btn-dark);
+      font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+      cursor:pointer;
+    }
+    .cookie-decline {
+      flex:1; padding:0.7rem; background:transparent;
+      border:1px solid rgba(255,255,255,0.12); border-radius:8px;
+      color:var(--muted); font-family:'Inter',sans-serif; font-size:13px;
+      cursor:pointer;
+    }
+
     @keyframes tagPulseL { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(249,115,22,0.3); } }
     .tag-pulse-e { animation:tagPulse  2.5s ease-in-out infinite; }
     .tag-pulse-r { animation:tagPulseR 2.5s ease-in-out infinite; }
@@ -197,6 +272,16 @@
   </style>
 </head>
 <body>
+
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookie-banner" style="display:none">
+  <p>Vi använder Google Analytics för att förstå hur analysen används. Inga personuppgifter kopplas till dina svar. <a href="https://re-volt.se/policy/integrity-policy" target="_blank">Läs vår integritetspolicy</a></p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="acceptCookies()">Acceptera</button>
+    <button class="cookie-decline" onclick="declineCookies()">Avböj</button>
+  </div>
+</div>
 
 <header class="header">
   <svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320">
@@ -412,6 +497,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
+
+// ─── ANALYTICS ───────────────────────────────────────────────────────────────
+const GA_ID = 'G-LGQC9CEPEM';
+
+function loadGA() {
+  const s1 = document.createElement('script');
+  s1.async = true;
+  s1.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+  document.head.appendChild(s1);
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag('js', new Date());
+  gtag('config', GA_ID, { anonymize_ip: true });
+}
+
+function acceptCookies() {
+  localStorage.setItem('cookie_consent', 'accepted');
+  $('cookie-banner').style.display = 'none';
+  loadGA();
+}
+
+function declineCookies() {
+  localStorage.setItem('cookie_consent', 'declined');
+  $('cookie-banner').style.display = 'none';
+}
+
+function initCookies() {
+  const consent = localStorage.getItem('cookie_consent');
+  if (consent === 'accepted') { loadGA(); }
+  else if (!consent) { $('cookie-banner').style.display = 'flex'; }
+}
+
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
 const EJS_PUBLIC_KEY  = '1Qm1eUWAF1kslBlCH';
 const EJS_SERVICE_ID  = 'service_ue4s2ke';
@@ -841,6 +959,7 @@ function restart(){ curQ=0; answers=new Array(14).fill(null); goTo('s-data'); }
 
 // Init: try loading from URL
 tryLoadFromUrl();
+initCookies();
 </script>
 </body>
 </html>
