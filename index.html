@@ -109,8 +109,9 @@
     .res-hero-cost { font-family:'DM Mono',monospace; font-size:1rem; color:var(--text); }
 
     /* AREA ACCORDION */
-    .area-card { border-bottom:1px solid var(--border); }
-    .area-card:last-child { border-bottom:none; }
+    .area-card { border-bottom:none; border-radius:12px; padding:1rem; margin-bottom:0.5rem; background:rgba(255,255,255,0.02); }
+    .area-card:nth-child(even) { background:rgba(255,255,255,0.045); }
+
     .area-card-hdr { display:flex; align-items:center; justify-content:space-between; padding:1.1rem 0; cursor:pointer; gap:0.75rem; }
     .area-hdr-left { display:flex; align-items:center; gap:0.5rem; }
     .area-rank { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted2); }
@@ -132,7 +133,7 @@
     .bar-track { height:5px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; margin-bottom:1rem; }
     .bar-fill { height:100%; border-radius:2px; background:var(--gold); transition:width 1.1s cubic-bezier(0.16,1,0.3,1); }
     .tag-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1rem; }
-    .tag { font-size:10px; padding:2px 8px; border-radius:4px; }
+    .tag { font-size:9px; padding:2px 7px; border-radius:4px; }
     .tag-e { background:rgba(255,204,0,0.1); border:1px solid rgba(255,204,0,0.3); color:#ffcc00; }
     .tag-r { background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); color:#4ade80; }
     .tag-l { background:rgba(249,115,22,0.1); border:1px solid rgba(249,115,22,0.3); color:#f97316; }
@@ -189,7 +190,7 @@
     .tag-pulse-e { animation:tagPulse  2.5s ease-in-out infinite; }
     .tag-pulse-r { animation:tagPulseR 2.5s ease-in-out infinite; }
     .tag-pulse-l { animation:tagPulseL 2.5s ease-in-out infinite; }
-    .area-hdr-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:0.35rem; }
+    .area-hdr-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:0.3rem; }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
     .screen-anim { animation:fadeUp 0.35s ease both; }
@@ -376,14 +377,14 @@
   <!-- All areas accordion -->
   <div class="card mt1 screen-anim">
     <div class="eyebrow">Alla sju områden</div>
-    <p style="font-size:12px;margin-bottom:1rem;color:var(--muted2)">Klicka på ett område för att se dina svar och hur vi räknat.</p>
+    <p style="font-size:12px;margin-bottom:1.25rem;color:var(--muted)">Klicka på ett område för att se dina svar och hur vi räknat.</p>
     <div id="r-areas"></div>
   </div>
 
   <!-- Restart -->
   <div class="restart-section">
     <p class="restart-note">Du kan ändra antaganden och göra om analysen.<br>Men till slut går siffrorna inte att gömma sig bakom.</p>
-    <button class="restart-link" onclick="restart()">Gör om analysen med andra värden</button>
+<button class="restart-link" onclick="restart()">Gör om analysen med andra värden</button>
   </div>
 
   <!-- CTA -->
@@ -415,6 +416,7 @@
 const EJS_PUBLIC_KEY  = '1Qm1eUWAF1kslBlCH';
 const EJS_SERVICE_ID  = 'service_ue4s2ke';
 const EJS_TEMPLATE_ID = 'template_u0vh9hj';
+emailjs.init(EJS_PUBLIC_KEY);
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
@@ -653,23 +655,27 @@ function calcCosts(d, ans) {
 }
 
 function sendEmailBg() {
-  if(!cachedResults||!userEmail) return;
-  emailjs.init(EJS_PUBLIC_KEY);
+  if(!cachedResults||!userEmail) { console.warn('EmailJS: saknar resultat eller e-post'); return; }
   const ranked=[...cachedResults.areaResults].sort((a,b)=>b.cost-a.cost);
+  const totalCost=cachedResults.areaResults.reduce((s,a)=>s+a.cost,0);
   const ranking=ranked.map((a,i)=>`${i+1}. ${a.name}: ${fmt(a.cost)}/år`).join('\n');
   emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
     to_email:     userEmail,
-    top_area:     ranked[0].name,
-    top_cost:     fmt(ranked[0].cost),
+    top_cost:     fmt(totalCost),
     tidsforlust:  `${cachedResults.totalHours} timmar (${cachedResults.totalWeeks} v) — Ofokuserat: ${cachedResults.t_ofokus}h / Göra om: ${cachedResults.t_goraom}h / Fel riktning: ${cachedResults.t_felrikt}h`,
     full_ranking: ranking,
     omsattning:   fmt(ud.s),
     timpris:      ud.t + ' kr/h',
     timmar:       ud.h + ' tim/v',
-partners:     ud.p,
+    partners:     ud.p,
     ofokuserade:  ud.sub + ' tim/v',
     energidranage:Math.round((1-ud.slE)*100) + '% dränerande',
-  }).catch(()=>{});
+    result_link:  encodeResultsUrl() || '',
+  }).then(()=>{
+    console.log('EmailJS: skickat till ' + userEmail);
+  }).catch(err=>{
+    console.error('EmailJS fel:', err);
+  });
 }
 
 // ─── BUILD RESULTS ───────────────────────────────────────────────────────────
@@ -771,7 +777,7 @@ function buildResults() {
           <button class="expand-btn" id="arr-${rank}">Visa svar</button>
         </div>
       </div>
-      <div class="bar-track" style="margin:0.5rem 0 0.75rem"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
+      <div class="bar-track" style="margin:0.6rem 0 0.85rem"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
       ${showTexts ? textsHtml : ''}
       <div class="area-card-body" id="body-${rank}">
         ${qDetailHtml}
@@ -801,8 +807,40 @@ function toggleNote(noteId, btnId) {
   btn.classList.toggle('active', open);
 }
 
+
+// ─── RESULTS LINK ────────────────────────────────────────────────────────────
+function encodeResultsUrl() {
+  try {
+    const data = { ud, answers };
+    const json = JSON.stringify(data);
+    const encoded = btoa(unescape(encodeURIComponent(json)));
+    return window.location.origin + window.location.pathname + '?r=' + encoded;
+  } catch(e) { return null; }
+}
+
+function tryLoadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const r = params.get('r');
+  if (!r) return false;
+  try {
+    const json = decodeURIComponent(escape(atob(r)));
+    const data = JSON.parse(json);
+    ud = data.ud;
+    answers = data.answers;
+    battValue = Math.round((ud.slE || 0.4) * 100);
+    buildResults();
+    return true;
+  } catch(e) {
+    console.error('Kunde inte läsa länken:', e);
+    return false;
+  }
+}
+
 // ─── RESTART ─────────────────────────────────────────────────────────────────
 function restart(){ curQ=0; answers=new Array(14).fill(null); goTo('s-data'); }
+
+// Init: try loading from URL
+tryLoadFromUrl();
 </script>
 </body>
 </html>
