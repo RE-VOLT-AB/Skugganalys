@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Skugganalysen / RE-VOLT</title>
+  <title>Skugganalys / RE-VOLT</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -66,7 +66,7 @@
 
     /* QUESTION */
     .q-area-tag { display:inline-block; font-size:10px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-dim); border-radius:4px; padding:3px 8px; margin-bottom:1rem; }
-    .q-text { font-family:'DM Serif Display',serif; font-size:1.25rem; line-height:1.45; color:var(--text); margin-bottom:1.5rem; }
+    .q-text { font-family:'DM Serif Display',serif; font-size:1.25rem; line-height:1.45; color:var(--text); margin-bottom:1.5rem; white-space:pre-line; }
 
     /* SCALE BUTTONS (labeled) */
     .scale-btns-v { display:flex; flex-direction:column; gap:8px; margin-bottom:1.5rem; }
@@ -128,7 +128,7 @@
     .zone-tydlig  { background:rgba(255,204,0,0.15); color:var(--gold); }
     .zone-hog     { background:rgba(255,120,0,0.15); color:#ffaa55; }
 
-    .bar-track { height:3px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden; margin-bottom:1rem; }
+    .bar-track { height:5px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; margin-bottom:1rem; }
     .bar-fill { height:100%; border-radius:2px; background:var(--gold); transition:width 1.1s cubic-bezier(0.16,1,0.3,1); }
     .tag-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1rem; }
     .tag { font-size:10px; padding:2px 8px; border-radius:4px; }
@@ -173,6 +173,20 @@
     .modal-btn-confirm { width:100%; padding:0.9rem; background:var(--gold); border:none; border-radius:10px; color:var(--btn-dark); font-family:'Inter',sans-serif; font-size:14px; font-weight:600; cursor:pointer; }
     .modal-btn-back { width:100%; padding:0.85rem; background:transparent; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:var(--muted); font-family:'Inter',sans-serif; font-size:13px; cursor:pointer; }
 
+
+
+    .q-detail-note-wrap { display:none; margin-top:0.5rem; }
+    .q-detail-note-wrap.open { display:block; }
+    .q-info-btn { background:none; border:1px solid rgba(255,255,255,0.15); border-radius:50%; width:18px; height:18px; font-size:10px; color:var(--muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; margin-left:6px; flex-shrink:0; line-height:1; transition:all 0.15s; }
+    .q-info-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
+    .q-info-btn.active { border-color:var(--gold-dim); color:var(--gold); background:rgba(255,204,0,0.08); }
+
+    @keyframes tagPulse { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(255,204,0,0.3); } }
+    @keyframes tagPulseRed { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(220,80,80,0.3); } }
+    .tag-pulse-e { animation:tagPulse 2.5s ease-in-out infinite; }
+    .tag-pulse-r { animation:tagPulseRed 2.5s ease-in-out infinite; }
+    .area-hdr-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:0.35rem; }
+
     @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
     .screen-anim { animation:fadeUp 0.35s ease both; }
   </style>
@@ -195,7 +209,7 @@
     <path fill="#fff" d="m33.12,148.96c-6.1,0-11.04,4.94-11.04,11.04v55.19h22.08v-66.23h-11.04Z"/>
     <path fill="#fff" d="m92.27,169.57c13.51-4.17,23.33-16.76,23.33-31.65,0-18.29-14.83-33.12-33.12-33.12,0,0,0,0-.01,0H22.08v22.08h60.41c6.1,0,11.04,4.94,11.04,11.04s-4.94,11.04-11.04,11.04h0c-3.61-.06-7.27,1.05-10.36,3.42-7.26,5.57-8.62,15.96-3.06,23.22l30.38,39.6h27.83l-35.01-45.62Z"/>
   </svg>
-  <div class="header-tag">Skugganalysen</div>
+  <div class="header-tag">Skugganalys</div>
 </header>
 
 <!-- INTRO -->
@@ -355,6 +369,11 @@
       <div class="res-hero-area" id="r-top-name"></div>
       <div class="res-hero-cost" id="r-top-cost"></div>
     </div>
+    <div class="divider" style="margin:1.25rem 0 1rem"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <span style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Total uppskattad kostnad per år</span>
+      <span style="font-family:'DM Mono',monospace;font-size:1.1rem;color:var(--text)" id="r-total-cost"></span>
+    </div>
     <p style="font-size:13px;line-height:1.75" id="r-top-desc"></p>
   </div>
 
@@ -375,7 +394,7 @@
   <div class="card mt1 screen-anim" style="text-align:center">
     <div class="eyebrow" style="margin-bottom:0.75rem">Nästa steg</div>
     <p style="margin-bottom:1.25rem">En kalibrering tar 30 minuter. Du lämnar med ett konkret nästa steg, oavsett vad du väljer för väg sen.</p>
-    <a href="https://re-volt.se" style="text-decoration:none">
+    <a href="https://outlook.office.com/bookwithme/user/86e43ea7e669461f8a1ca7220b707b46@re-volt.se/meetingtype/EGntA_O7WU6tTOkBhgVyHw2?anonymous&ep=mlink" style="text-decoration:none">
       <button class="btn-primary" style="margin-top:0">Boka en kalibrering</button>
     </a>
   </div>
@@ -403,30 +422,51 @@ const EJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
-  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer — även långt senare?', labels:['Inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
+  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
   { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 3% av omsättningen vid beslutsoklarhet.' },
-  { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Agerar snabbt','Några veckor','Någon månad','Flera månader','År'], note:'Beräknas tillsammans med nästa fråga: timpris × 8h × andel av dagen × veckor per år.' },
-  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Kombineras med föregående fråga för att ge en trovärdig kostnad.' },
-  { ai:2, q:'Hur många kurser, program eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Inga','Ett','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
+  { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Högst någon dag','Någon vecka','Någon månad','Flera månader','År'], note:'Beräknas tillsammans med nästa fråga: timpris × 8h × andel av dagen × veckor per år.' },
+  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Kombineras med föregående fråga för att ge en trovärdig kostnad.' },
+  { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
   { ai:2, q:'Hur ofta får du frågor eller reaktioner som visar att folk inte riktigt förstår vad du gör eller vem du gör det för?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 2% av omsättningen vid konsekvent otydlighet utåt.' },
   { ai:3, q:'Hur ofta skjuter du upp beslut för att slippa hantera någon annans reaktion på det?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 9% av omsättningen (ungefär en månads försenad potential per år).' },
   { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 15% av omsättningen vid konsekvent underprissättning.' },
   { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på antal partners × andel dränerande (batteriet) × timpris × timmar per vecka (0–4h beroende på svar).' },
-  { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar det?', labels:['Avslutar snabbt','Några veckor','Någon månad','Flera månader','År'], note:'Baserat på antal partners × timpris × veckor kvar × 2h spilltid per vecka.' },
+  { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar eller justerar det till något hållbart?', labels:['Några dagar','Några veckor','Någon månad','Flera månader','År'], note:'Baserat på antal partners × timpris × veckor kvar × 2h spilltid per vecka.' },
   { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 20% mer betalt möjligt om självbilden inte sätter taket. Baserat på timpris × total arbetstid.' },
-  { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde någonstans?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på ofokuserade timmar × timpris. Tid som jobbas hårt utan riktning är förlorad kapacitet.' },
-  { ai:6, q:'Hur ofta är du i ett läge där arbetet bara flödar — där du är helt närvarande och presterar på topp?', labels:['Dagligen','Några gånger i veckan','Någon gång i veckan','Sällan','Nästan aldrig'], note:'Baserat på Salesforce 2024: 1,5h/8h = 19% av omsättningen. Brist på flöde är den centrala orsaken till fokustapp.' },
+  { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde dit du ville?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på ofokuserade timmar × timpris. Tid som jobbas hårt utan riktning är förlorad kapacitet.' },
+  { ai:6, q:'Hur ofta är du i ett läge där arbetet bara flödar —\ndär du är helt närvarande och presterar på topp?', labels:['Dagligen','Några gånger i veckan','Någon gång i veckan','Sällan','Nästan aldrig'], note:'Baserat på Salesforce 2024: 1,5h/8h = 19% av omsättningen. Brist på flöde är den centrala orsaken till fokustapp.' },
   { ai:6, q:'Hur annorlunda är du som ledare och beslutsfattare när du är under press — jämfört med när du är på topp?', labels:['Nästan ingen skillnad','Liten skillnad','Märkbar skillnad','Stor skillnad','Helt olika personer'], note:'Baserat på ofokuserade timmar × timpris × 1,5 (spilleffekt på dem du arbetar med).' },
 ];
 
 const AREAS = [
-  { name:'Oklart',        tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}], tip:'Vi synliggör varifrån beslutet egentligen kom. Du kan inte osse det du sett.', rel:'De närmast dig anpassar sig efter din otydlighet utan att säga det högt.' },
-  { name:'Omständigheter',tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Livsglädje'}], tip:'Vi undersöker vad förklaringen skyddar dig från. Insikten gör den svårare att hålla kvar.', rel:'Det kostar mer än tid. Det kostar livsglädje och de relationer som förväntar sig mer av dig.' },
-  { name:'Sökandet',      tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}], tip:'Vi undersöker vad du egentligen letar efter under söket. Det är sällan det du tror.', rel:'De runt dig har slutat tro fullt ut på din riktning, för du har bytt den för många gånger.' },
-  { name:'Andra',         tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}], tip:'Vi synliggör utbytet, vad du ger upp och vad du faktiskt får tillbaka.', rel:'Du vet inte var du slutar och var andras förväntningar börjar.' },
-  { name:'Samarbeten',    tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}], tip:'Vi räknar på det tillsammans. Siffran brukar vara tydligare än känslan.', rel:'Att avsluta känns som att svika, även när det är det ärligaste alternativet.' },
-  { name:'Jag',           tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Energi / Livsglädje'}], tip:'Vi undersöker vilken självbild som sätter taket. Den är inlärd.', rel:'Du arbetar hårdare än nödvändigt för att bevisa något som redan är bevisat.' },
-  { name:'Flödet',        tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}], tip:'Vi kartlägger ditt flödesmönster, vad som föregår det och vad som bryter det.', rel:'Glappet mellan dig på topp och dig under press kostar relationer och affärer.' },
+  { name:'Oklart', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}],
+    desc:'Otydlighet i beslut kostar mer än felaktiga beslut — det kostar tid och energi på omtag och kan skapa relationer som tyst anpassar sig till oklarheten utan att säga något.',
+    cal:'Under en kalibrering synliggör vi varifrån dina beslut egentligen kommer.',
+    tip:'Fundera på om dina senaste beslut tagits från rädsla, passion eller yttre press.' },
+  { name:'Omständigheter', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Livsglädje'}],
+    desc:'Att stanna i något du vet inte fungerar kostar dig inte bara tid — det kostar energi, livsglädje och ibland de relationer som förväntar sig en autentisk partner.',
+    cal:'Under en kalibrering undersöker vi vad som håller dig kvar.',
+    tip:'Fundera på vad du skulle göra imorgon om inte omständigheter kunde påverka din plan.' },
+  { name:'Sökandet', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'}],
+    desc:'Att byta riktning gång på gång kostar mer än pengar och tid — både ditt undermedvetna och de runt dig börjar successivt sluta tro på att du vet vart du är på väg.',
+    cal:'Under en kalibrering undersöker vi vad du egentligen letar efter.',
+    tip:'Fundera på om du söker för att du saknar något eller om det bara är ett tryggt sätt att slippa ta ett jobbigt beslut.' },
+  { name:'Andra', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+    desc:'När andras förväntningar styr dina beslut och priser vet du till slut inte var du slutar och var de börjar — och det kostar dig mer än potentiellt förlorade intäkter.',
+    cal:'Under en kalibrering tittar vi på varför du låter andra styra dina beslut och vad du ger upp och vad du faktiskt får tillbaka från att agera så.',
+    tip:'Fundera på ett beslut du skjutit upp — vems obehag undviker du egentligen genom att inte bestämma dig?' },
+  { name:'Samarbeten', tags:[{cls:'tag-e',t:'⚡ Energi / Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+    desc:'Samarbeten som passerat sitt datum eller som skapades ur fel tillstånd kostar mer än din energi varje vecka — och att avsluta eller justera dem kan ibland kännas som att svika eller överge.',
+    cal:'Under en kalibrering kartlägger vi för och nackdelar, vad det faktiskt kostar dig och vad som håller dig kvar i det även om du påstår dig vilja något annat.',
+    tip:'Fundera på vilket samarbete du skulle ha avslutat för länge sedan om det inte kändes så jobbigt.' },
+  { name:'Jag', tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Energi / Livsglädje'}],
+    desc:'Att arbeta hårdare än nödvändigt för att bevisa något som redan är bevisat är ett av de tystaste och dyraste mönstren — det syns sällan utifrån men kostar inifrån.',
+    cal:'Under en kalibrering undersöker vi vilken självbild som ligger och arbetar i bakgrunden och sätter taket för vad du tar betalt och gör.',
+    tip:'Fundera på vad du skulle vilja göra och även ha i arvode för det om du visste att ingen kunde säga nej.' },
+  { name:'Flödet', tags:[{cls:'tag-e',t:'⚡ Passion'},{cls:'tag-r',t:'🔴 Kärlek / Relationer'}],
+    desc:'Glappet mellan dig på topp och dig under press kostar mer än du märker — det syns i dina beslut, dina relationer och dina affärer långt innan du själv ser det.',
+    cal:'Under en kalibrering kartlägger vi vad som föregår ditt flöde och vad som bryter det.',
+    tip:'Fundera på när du senast var i flöde — vad gjorde du då, lyssnade du på något särskilt, var du på en särskild plats, hade du några särskilda kläder, drack du något särskilt osv?' }
 ];
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
@@ -559,7 +599,7 @@ function showLoading() {
     setTimeout(()=>{
       mEl.textContent=LOAD_MSGS[i].main; sEl.textContent=LOAD_MSGS[i].sub;
       mEl.style.opacity='1'; sEl.style.opacity='1';
-      i++; i<LOAD_MSGS.length?setTimeout(step,2000):setTimeout(buildResults,900);
+      i++; i<LOAD_MSGS.length?setTimeout(step,3200):setTimeout(buildResults,1200);
     },380);
   }
   step();
@@ -567,7 +607,7 @@ function showLoading() {
 
 // ─── COST CALCULATION ────────────────────────────────────────────────────────
 function calcCosts(d, ans) {
-  const f = i => (ans[i]-1)/4;
+  const f = i => Math.max(0.05, (ans[i]-1)/4);
   const qc = new Array(14).fill(0);
   // Oklart
   qc[0]=d.s*0.04*f(0);
@@ -584,8 +624,8 @@ function calcCosts(d, ans) {
   qc[6]=d.s*0.09*f(6);
   qc[7]=d.s*0.15*f(7);
   // Samarbeten
-  qc[8]=d.p*(1-d.slE)*d.t*(ans[8]-1)*48;
-  qc[9]=d.p*d.t*[0,2,4,16,40][ans[9]-1]*2;
+  qc[8]=d.p*(1-d.slE)*d.t*Math.max(0.25, (ans[8]-1))*48;
+  qc[9]=d.p*d.t*[1,2,4,16,40][ans[9]-1]*2;
   // Jag
   qc[10]=d.t*0.20*d.h*48*f(10);
   qc[11]=d.sub*d.t*48*f(11);
@@ -619,9 +659,11 @@ function buildResults() {
   cachedResults={areaResults, qc};
   const sorted=[...areaResults.entries()].sort((a,b)=>b[1].cost-a[1].cost);
   const [topIdx,top]=sorted[0];
+  const totalCost = areaResults.reduce((s,a)=>s+a.cost,0);
   $('r-top-name').textContent=top.name;
   $('r-top-cost').textContent=fmt(top.cost)+' / år';
-  $('r-top-desc').textContent=top.tip+' '+top.rel;
+  $('r-top-desc').textContent=top.desc;
+  $('r-total-cost').textContent=fmt(totalCost);
 
   const list=$('r-areas');
   list.innerHTML='';
@@ -634,22 +676,43 @@ function buildResults() {
       const q=QS[qi]; const ans=answers[qi]; const cost=qc[qi];
       const prop=Math.round(Math.min(cost/areaTotal,1)*100);
       const isOmst=ai===1&&(qi===2||qi===3);
+      const noteId=`note-${rank}-${qi}`;
+      const btnId=`ibtn-${rank}-${qi}`;
       return `<div class="q-detail">
         <div class="q-detail-q">${q.q}</div>
         <div class="q-detail-row">
           <span class="q-detail-ans">${q.labels[ans-1]}</span>
-          <span class="q-detail-cost">${isOmst&&qi===3?'(kombinerad)':fmt(cost)}</span>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span class="q-detail-cost">${isOmst&&qi===3?'(kombinerad)':fmt(cost)}</span>
+            <button class="q-info-btn" id="${btnId}" onclick="toggleNote('${noteId}','${btnId}')" title="Visa beräkning">i</button>
+          </div>
         </div>
         <div class="q-mini-bar"><div class="q-mini-fill" style="width:0%" data-w="${prop}%"></div></div>
-        <div class="assumption-note">${q.note}</div>
+        <div class="q-detail-note-wrap" id="${noteId}">
+          <div class="assumption-note">${q.note}</div>
+        </div>
       </div>`;
     }).join('');
 
+    const showTags = area.pct >= 0.25;
+    const hdrTagHtml = showTags ? area.tags.map(t=>`<span class="tag ${t.cls} ${t.cls==='tag-e'?'tag-pulse-e':'tag-pulse-r'}" style="font-size:9px;padding:2px 6px">${t.t}</span>`).join('') : '';
+    const showTexts = area.pct >= 0.25;
+    const textsHtml = `<div class="area-zone-text" style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid rgba(255,255,255,0.05)">
+      <p style="font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:0.6rem">${area.desc}</p>
+      <p style="font-size:13px;line-height:1.7;color:var(--muted);margin-bottom:0.75rem">${area.cal}</p>
+      <div style="background:rgba(255,204,0,0.06);border:1px solid rgba(255,204,0,0.2);border-radius:8px;padding:0.75rem 1rem">
+        <span style="font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:0.35rem">Tips</span>
+        <p style="font-size:12px;line-height:1.65;color:var(--muted);font-style:italic;margin:0">${area.tip}</p>
+      </div>
+    </div>`;
     list.innerHTML+=`<div class="area-card">
       <div class="area-card-hdr" onclick="toggleArea(${rank})">
         <div class="area-hdr-left">
           <span class="area-rank">${rank+1}.</span>
-          <span class="area-name">${area.name}</span>
+          <div>
+            <span class="area-name">${area.name}</span>
+            ${hdrTagHtml ? `<div class="area-hdr-tags">${hdrTagHtml}</div>` : ''}
+          </div>
         </div>
         <div class="area-hdr-right">
           <span class="area-cost-sm">${fmt(area.cost)} / år</span>
@@ -657,12 +720,11 @@ function buildResults() {
           <span class="expand-arrow" id="arr-${rank}">▼</span>
         </div>
       </div>
+      <div class="bar-track" style="margin:0.5rem 0 0.75rem"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
+      ${showTexts ? textsHtml : ''}
       <div class="area-card-body" id="body-${rank}">
-        <div class="bar-track"><div class="bar-fill" style="width:0%" data-w="${Math.round(area.pct*100)}%"></div></div>
-        <div class="tag-row">${tagHtml}</div>
         ${qDetailHtml}
-        <div class="area-rel">${area.rel}</div>
-        <div class="area-tip-txt">${area.tip}</div>
+        ${!showTexts ? textsHtml : ''}
       </div>
     </div>`;
   });
@@ -678,6 +740,13 @@ function toggleArea(rank) {
   const body=$(`body-${rank}`), arr=$(`arr-${rank}`);
   const open=body.classList.toggle('open');
   arr.classList.toggle('open',open);
+}
+
+// ─── INFO TOGGLE ─────────────────────────────────────────────────────────────
+function toggleNote(noteId, btnId) {
+  const note=document.getElementById(noteId), btn=document.getElementById(btnId);
+  const open=note.classList.toggle('open');
+  btn.classList.toggle('active', open);
 }
 
 // ─── RESTART ─────────────────────────────────────────────────────────────────
