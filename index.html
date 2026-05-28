@@ -210,6 +210,20 @@
       cursor:pointer;
     }
 
+
+    .shr-wrap { margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem; }
+    .shr-trigger { display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:0.5rem 0; }
+    .shr-trigger-label { font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+    .shr-arrow { font-size:11px; color:var(--muted2); transition:transform 0.2s; }
+    .shr-arrow.open { transform:rotate(180deg); }
+    .shr-body { display:none; padding-top:1rem; }
+    .shr-body.open { display:block; animation:fadeUp 0.2s ease; }
+    .shr-q { padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .shr-q:last-child { border-bottom:none; }
+    .shr-q-label { font-size:11px; font-weight:500; color:var(--gold); margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.06em; }
+    .shr-q-formula { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:0.4rem; }
+    .shr-q-text { font-size:12px; color:var(--muted); line-height:1.65; }
+
     @keyframes tagPulse  { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(255,204,0,0.3); } }
 
     /* COOKIE BANNER */
@@ -236,6 +250,20 @@
       cursor:pointer;
     }
 
+
+    .shr-wrap { margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem; }
+    .shr-trigger { display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:0.5rem 0; }
+    .shr-trigger-label { font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+    .shr-arrow { font-size:11px; color:var(--muted2); transition:transform 0.2s; }
+    .shr-arrow.open { transform:rotate(180deg); }
+    .shr-body { display:none; padding-top:1rem; }
+    .shr-body.open { display:block; animation:fadeUp 0.2s ease; }
+    .shr-q { padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .shr-q:last-child { border-bottom:none; }
+    .shr-q-label { font-size:11px; font-weight:500; color:var(--gold); margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.06em; }
+    .shr-q-formula { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:0.4rem; }
+    .shr-q-text { font-size:12px; color:var(--muted); line-height:1.65; }
+
     @keyframes tagPulseR { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(74,222,128,0.3); } }
 
     /* COOKIE BANNER */
@@ -261,6 +289,20 @@
       color:var(--muted); font-family:'Inter',sans-serif; font-size:13px;
       cursor:pointer;
     }
+
+
+    .shr-wrap { margin-top:1.5rem; border-top:1px solid var(--border); padding-top:1rem; }
+    .shr-trigger { display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:0.5rem 0; }
+    .shr-trigger-label { font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+    .shr-arrow { font-size:11px; color:var(--muted2); transition:transform 0.2s; }
+    .shr-arrow.open { transform:rotate(180deg); }
+    .shr-body { display:none; padding-top:1rem; }
+    .shr-body.open { display:block; animation:fadeUp 0.2s ease; }
+    .shr-q { padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .shr-q:last-child { border-bottom:none; }
+    .shr-q-label { font-size:11px; font-weight:500; color:var(--gold); margin-bottom:0.3rem; text-transform:uppercase; letter-spacing:0.06em; }
+    .shr-q-formula { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:0.4rem; }
+    .shr-q-text { font-size:12px; color:var(--muted); line-height:1.65; }
 
     @keyframes tagPulseL { 0%,100% { opacity:0.75; } 50% { opacity:1; box-shadow:0 0 6px rgba(249,115,22,0.3); } }
     .tag-pulse-e { animation:tagPulse  2.5s ease-in-out infinite; }
@@ -473,6 +515,86 @@
 <button class="restart-link" onclick="restart()">Gör om analysen med andra värden</button>
   </div>
 
+
+  <!-- SÅ HÄR RÄKNAR VI -->
+  <div class="card mt1 screen-anim">
+    <div class="shr-wrap">
+      <div class="shr-trigger" onclick="toggleShr()">
+        <span class="shr-trigger-label">Så här räknar vi</span>
+        <span class="shr-arrow" id="shr-arrow">▼</span>
+      </div>
+      <div class="shr-body" id="shr-body">
+        <p style="font-size:12px;color:var(--muted2);margin-bottom:1.25rem;line-height:1.65">Alla beräkningar är kvalificerade uppskattningar. Svarsfaktorn går från 0,05 (nästan aldrig) till 1,0 (alltid) och skalar kostnaden efter ditt svar. Transparensen finns här för den som vill förstå logiken.</p>
+
+        <div class="shr-q">
+          <div class="shr-q-label">Q1 — Oklart</div>
+          <div class="shr-q-formula">omsättning × 4% × svarsfaktor</div>
+          <div class="shr-q-text">Saville Assessment 2024 visar upp till 7% omsättningstapp vid suboptimalt ledarskap. Vi använder 4% som konservativ underkant.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q2 — Oklart</div>
+          <div class="shr-q-formula">omsättning × 3% × svarsfaktor</div>
+          <div class="shr-q-text">Samma logik som Q1 — Saville Assessment 2024. 3% som konservativ underkant för otydlighet vid beslutsfattande, lägre eftersom mönstret är mer diffust.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q3 + Q4 — Omständigheter</div>
+          <div class="shr-q-formula">timpris × 8h × andel av dagen × veckor per år</div>
+          <div class="shr-q-text">Q3 ger antal veckor per år (0–40), Q4 ger andel av dagen (5–70%). Vid snabb action är kostnaden försumbar och sätts till noll. Prissatt med ditt timpris.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q5 — Sökandet</div>
+          <div class="shr-q-formula">ofokuserade timmar × timpris × 48v × 20% × svarsfaktor</div>
+          <div class="shr-q-text">Vi estimerar att 20% av ofokuserade timmar går till sökbeteende — ungefär 18 minuter av en ofokuserad timme. Förankrat i Salesforce 2024 (1,5h/dag fokustapp).</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q6 — Sökandet</div>
+          <div class="shr-q-formula">omsättning × 2% × svarsfaktor</div>
+          <div class="shr-q-text">Otydlighet utåt kostar i förtroende och konvertering. 2% är ett konservativt kvalificerat antagande.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q7 — Andra</div>
+          <div class="shr-q-formula">omsättning × 9% × svarsfaktor</div>
+          <div class="shr-q-text">9% motsvarar ungefär en månads försenad potential per år. Kvalificerat antagande — logiken är att varje månads fördröjning kostar en tolftedel av årets potential.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q8 — Andra</div>
+          <div class="shr-q-formula">omsättning × 15% × svarsfaktor</div>
+          <div class="shr-q-text">Oscar har dubblerat sitt pris och hjälpt kunder att dubblera sina — utan att det påverkat antalet försäljningar negativt. 15% är en konservativ uppskattning av prisgapet.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q9 — Samarbeten</div>
+          <div class="shr-q-formula">omsättning × 0,8% × partners (max 6) × dränageandel × svarsfaktor</div>
+          <div class="shr-q-text">0,8% per dränerande partner är ett kvalificerat antagande. Batteriets dränageandel multiplicerar kostnaden efter hur stor del av partnerskapen som faktiskt tömmer dig.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q10 — Samarbeten</div>
+          <div class="shr-q-formula">partners (max 6) × timpris × veckor × 2h per vecka</div>
+          <div class="shr-q-text">2 timmar per vecka per partner är en konservativ uppskattning av spilltid. Antal veckor hämtas direkt från ditt svar — från försumbart vid snabb action till 40 veckor vid år.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q11 — Jag</div>
+          <div class="shr-q-formula">omsättning × 8% × svarsfaktor</div>
+          <div class="shr-q-text">När självbilden sätter pristaket förlorar du en andel av varje affär. Skillnaden mot Q8 är att mönstret ofta är omedvetet. 8% är ett kvalificerat antagande.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q12 — Jag</div>
+          <div class="shr-q-formula">omsättning × 1% × svarsfaktor</div>
+          <div class="shr-q-text">Konservativt estimat baserat på Salesforce 2024. En del av fokustappen går till arbete som känns produktivt men inte leder dit du vill.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q13 — Flödet</div>
+          <div class="shr-q-formula">timpris × 0,5h × 5 dagar × 48 veckor × svarsfaktor</div>
+          <div class="shr-q-text">Baserat på Salesforce 2024 (1,5h/dag fokustapp). Vi räknar konservativt med att 0,5h av det beror på brist på flöde. Skalan är inverterad — dagligen i flöde ger lägst kostnad.</div>
+        </div>
+        <div class="shr-q">
+          <div class="shr-q-label">Q14 — Flödet</div>
+          <div class="shr-q-formula">timpris × ofokuserade timmar × 30% × 48 veckor × svarsfaktor</div>
+          <div class="shr-q-text">Vi estimerar konservativt att du producerar 30% mer under en fokuserad timme jämfört med en ofokuserad. Glappet mellan dig på topp och dig under press förstärker den förlusten.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- CTA -->
   <div class="card mt1 screen-anim" style="text-align:center">
     <div class="eyebrow" style="margin-bottom:0.75rem">Nästa steg</div>
@@ -539,20 +661,20 @@ emailjs.init(EJS_PUBLIC_KEY);
 
 // ─── QUESTIONS ───────────────────────────────────────────────────────────────
 const QS = [
-  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Troligtvis inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Kvalificerat antagande: upp till 4% av omsättningen. Baserat på Saville Assessment 2024 (upp till 7% vid suboptimalt ledarskap).' },
-  { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 3% av omsättningen vid beslutsoklarhet.' },
-  { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Högst någon dag','Någon vecka','Någon månad','Flera månader','År'], note:'Beräknas tillsammans med nästa fråga: timpris × 8h × andel av dagen × veckor per år.' },
-  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Beräknas tillsammans med föregående fråga. Kostnaden visas som kombinerad summa för Omständigheter.' },
-  { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Troligtvis inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Kvalificerat antagande: 20% av ofokuserade timmar går till sökbeteende. Förankrat i Salesforce 2024.' },
-  { ai:2, q:'Hur ofta får du frågor eller reaktioner som visar att folk inte riktigt förstår vad du gör eller vem du gör det för?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 2% av omsättningen vid konsekvent otydlighet utåt.' },
-  { ai:3, q:'Hur ofta skjuter du upp beslut för att slippa hantera någon annans reaktion på det?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 9% av omsättningen (ungefär en månads försenad potential per år).' },
-  { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 15% av omsättningen vid konsekvent underprissättning.' },
-  { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på antal partners × andel dränerande (batteriet) × timpris × timmar per vecka (0–4h beroende på svar).' },
-  { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar eller justerar det till något hållbart?', labels:['Några dagar','Några veckor','Någon månad','Flera månader','År'], note:'Baserat på antal partners × timpris × veckor kvar × 2h spilltid per vecka.' },
-  { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Nästan aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'Kvalificerat antagande: 20% mer betalt möjligt om självbilden inte sätter taket. Baserat på timpris × total arbetstid.' },
-  { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde dit du ville?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på ofokuserade timmar × timpris. Tid som jobbas hårt utan riktning är förlorad kapacitet.' },
-  { ai:6, q:'Hur ofta är du i ett läge där arbetet bara flödar —\ndär du är helt närvarande och presterar på topp?', labels:['Dagligen','Några gånger i veckan','Någon gång i veckan','Sällan','Nästan aldrig'], note:'Baserat på Salesforce 2024: 1,5h/8h = 19% av omsättningen. Brist på flöde är den centrala orsaken till fokustapp.' },
-  { ai:6, q:'Hur annorlunda är du som ledare och beslutsfattare när du är under press — jämfört med när du är på topp?', labels:['Nästan ingen skillnad','Liten skillnad','Märkbar skillnad','Stor skillnad','Helt olika personer'], note:'Baserat på ofokuserade timmar × timpris × 1,5 (spilleffekt på dem du arbetar med).' },
+  { ai:0, q:'Hur många av ditt senaste kvartals beslut har kostat dig pengar, tid, energi eller relationer flera gånger — ibland kanske även långt senare?', labels:['Troligtvis inga','Ett eller två','Några stycken','Hälften eller fler','De flesta'], note:'Saville Assessment 2024 visar upp till 7% omsättningstapp vid suboptimalt ledarskap. Vi använder 4% som konservativ underkant. Svarsfaktorn (5–100%) skalar kostnaden efter hur ofta du känner igen mönstret.' },
+  { ai:0, q:'Hur ofta fattar du beslut utan att egentligen veta vad du vill ha ut av dem?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Baserat på samma logik som föregående fråga — Saville Assessment 2024. Vi använder 3% som konservativ underkant för otydlighet vid beslutsfattande, lägre eftersom mönstret är mer diffust och svårare att direkt koppla till ett krontal.' },
+  { ai:1, q:'Hur länge tolererar du situationer du redan vet inte fungerar — innan du gör något åt dem?', labels:['Högst någon dag','Någon vecka','Någon månad','Flera månader','År'], note:'Q3 och Q4 beräknas tillsammans. Q3 ger antal veckor per år du befinner dig i situationen — vid snabb action är kostnaden försumbar och sätts till noll, vid år ges 40 veckor. Prissatt med timpris × 8 timmar × andel av dagen (från Q4).' },
+  { ai:1, q:'När du är fast i något som inte fungerar — hur stor del av dagen bär du det med dig?', labels:['Knappt något alls','Lite grann','En märkbar del','Stor del','Nästan hela'], note:'Q4 ger intensitetsdimensionen — hur stor del av dagen situationen tar i anspråk mentalt. Skalan går från 5% vid knappt något alls till 70% vid nästan hela dagen. Multiplicerat med veckor från Q3 och timpris ger det den faktiska tidskostnaden.' },
+  { ai:2, q:'Hur många kurser, utbildningar eller strategier har du investerat i de senaste två åren — utan att det ledde till en förändring som håller än idag?', labels:['Troligtvis inga','En','Två eller tre','Fyra eller fem','Fler än fem'], note:'Vi estimerar att 20% av dina ofokuserade timmar går till sökbeteende — ungefär 18 minuter av en ofokuserad timme. Förankrat i Salesforce 2024 som visar att grundare förlorar 1,5 timmar per dag på fokustapp. Svarsfaktorn skalar efter hur många initiativ som aldrig landade i faktisk förändring.' },
+  { ai:2, q:'Hur ofta får du frågor eller reaktioner som visar att folk inte riktigt förstår vad du gör eller vem du gör det för?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Otydlighet utåt kostar i förlorat förtroende och konvertering. Vi estimerar 2% av omsättningen som en konservativ kostnad — ett kvalificerat antagande att en oklar riktning sänker igenkänning och tillit hos potentiella kunder.' },
+  { ai:3, q:'Hur ofta skjuter du upp beslut för att slippa hantera någon annans reaktion på det?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Uppskjutna beslut kostar i försenade möjligheter och uteblivna intäkter. 9% motsvarar ungefär en månads försenad potential per år — ett kvalificerat antagande utan direkt extern källa, men logiken är att varje månads fördröjning kostar en tolftedel av årets potential.' },
+  { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'15% är ett kvalificerat antagande baserat på att prisglapp på 10–30% förekommer ofta hos entreprenörer som prissätter för att undvika obehag. Oscar har själv dubblerat sitt pris och hjälpt kunder att dubblera sina — utan att det påverkat antalet försäljningar negativt.' },
+  { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Dränerande samarbeten kostar i energi, fokus och återhämtningstid. Vi estimerar 0,8% av omsättningen per dränerande partner som en konservativ kostnad. Batteriet anger andelen av dina partners (max 6 i beräkningen) som du upplever som dränerande.' },
+  { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar eller justerar det till något hållbart?', labels:['Några dagar','Några veckor','Någon månad','Flera månader','År'], note:'Varje vecka du stannar i ett samarbete som passerat sitt datum kostar i spilltid — möten, uppföljningar och mental hantering. Vi räknar med 2 timmar per vecka per partner (max 6) som en konservativ uppskattning. Antal veckor hämtas från ditt svar, prissatt med ditt timpris.' },
+  { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Nästan aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'När självbilden sätter pristaket istället för marknaden förlorar du en andel av varje affär. Oscar har själv dubblerat sitt pris och hjälpt kunder att dubblera sina — utan att det påverkat antalet försäljningar negativt. Skillnaden mot Q8 är att det här mönstret ofta är omedvetet. Vi estimerar 8% som ett kvalificerat antagande.' },
+  { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde dit du ville?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Salesforce 2024 visar att grundare förlorar 1,5 timmar per dag på fokustapp. En del av den förlorade tiden går till arbete som känns produktivt men inte leder dit du vill. Vi estimerar konservativt 1% av omsättningen för den typen av riktningslöst arbete.' },
+  { ai:6, q:'Hur ofta är du i ett läge där arbetet bara flödar —\ndär du är helt närvarande och presterar på topp?', labels:['Dagligen','Några gånger i veckan','Någon gång i veckan','Sällan','Nästan aldrig'], note:'Baserat på Salesforce 2024 som visar att grundare förlorar 1,5 timmar per dag på fokustapp. Vi räknar konservativt med att 0,5 timmar av det beror på brist på flöde — 0,5h × 5 dagar × 48 veckor prissatt med ditt timpris. Skalan är inverterad: dagligen i flöde ger lägst kostnad.' },
+  { ai:6, q:'Hur annorlunda är du som ledare och beslutsfattare när du är under press — jämfört med när du är på topp?', labels:['Nästan ingen skillnad','Liten skillnad','Märkbar skillnad','Stor skillnad','Helt olika personer'], note:'Kvalificerat antagande: upp till 8% av omsättningen. Glappet mellan dig på topp och dig under press påverkar beslut, relationer och affärer.' },
 ];
 
 const AREAS = [
@@ -741,13 +863,13 @@ function calcCosts(d, ans) {
   qc[7]=d.s*0.15*f(7);
   // Samarbeten
   qc[8]=d.p*(1-d.slE)*d.t*Math.max(0.25, (ans[8]-1))*48;
-  qc[9]=d.p*d.t*[1,2,4,16,40][ans[9]-1]*2;
+  qc[9]=Math.min(d.p,6)*d.t*[0,2,4,16,40][ans[9]-1]*2;
   // Jag
-  qc[10]=d.t*0.20*d.h*48*f(10);
-  qc[11]=d.sub*d.t*48*f(11);
+  qc[10]=d.s*0.08*f(10);
+  qc[11]=d.s*0.01*f(11);
   // Flödet
-  qc[12]=d.s*0.19*f(12);
-  qc[13]=d.sub*d.t*48*1.5*f(13);
+  qc[12]=d.t*0.5*5*48*f(12);
+  qc[13]=d.t*d.sub*0.30*48*f(13);
   // Area totals
   const ac=AREAS.map((_,ai)=>{
     const idxs=QS.reduce((a,q,i)=>{ if(q.ai===ai)a.push(i); return a; },[]);
@@ -758,15 +880,12 @@ function calcCosts(d, ans) {
   const t_veckor=[0,2,4,16,40][ans[2]-1];
   const t_dag=[0.05,0.15,0.30,0.50,0.70][ans[3]-1];
   const th_omst   = 8 * t_dag * t_veckor;
-  const th_sam9   = d.p * (1-d.slE) * Math.max(0.25,(ans[8]-1)) * 48;
-  const th_sam10  = d.p * [1,2,4,16,40][ans[9]-1] * 2;
-  const th_jag11  = d.h * 0.20 * 48 * Math.max(0.05,(ans[10]-1)/4);
-  const th_jag12  = d.sub * 48 * Math.max(0.05,(ans[11]-1)/4);
   const th_sok5   = d.sub * 48 * 0.20 * Math.max(0.05,(ans[4]-1)/4);
-  const th_flode14= d.sub * 48 * 1.5 * Math.max(0.05,(ans[13]-1)/4);
-  const t_ofokus  = Math.round(th_jag12 + th_flode14 + th_sok5);
-  const t_goraom  = Math.round(th_omst + th_jag11);
-  const t_felrikt = Math.round(th_sam9 + th_sam10);
+  const th_sam9   = d.p * (1-d.slE) * Math.max(0.05,(ans[8]-1)/4) * 48;
+  const th_sam10  = d.p * [0,2,4,16,40][ans[9]-1] * 2;
+  const t_ofokus  = Math.round(th_sok5 + th_omst);
+  const t_goraom  = Math.round(th_sam9 + th_sam10);
+  const t_felrikt = Math.round(d.h * 0.20 * 48 * Math.max(0.05,(ans[10]-1)/4));
   const totalHours = t_ofokus + t_goraom + t_felrikt;
   const totalWeeks = (totalHours / 40).toFixed(1);
 
@@ -850,7 +969,7 @@ function buildResults() {
     const tagHtml=area.tags.map(t=>`<span class="tag ${t.cls}">${t.t}</span>`).join('');
     const qDetailHtml=qIdxs.map(qi=>{
       const q=QS[qi]; const ans=answers[qi]; const cost=qc[qi];
-      const prop=Math.round(Math.min(cost/areaTotal,1)*100);
+      const ansLevel = Math.round(Math.max(0.05,(answers[qi]-1)/4)*100);
       const isOmst=ai===1&&(qi===2||qi===3);
       const noteId=`note-${rank}-${qi}`;
       const btnId=`ibtn-${rank}-${qi}`;
@@ -955,6 +1074,13 @@ function tryLoadFromUrl() {
     console.error('Kunde inte läsa länken:', e);
     return false;
   }
+}
+
+// ─── SÅ HÄR RÄKNAR VI ────────────────────────────────────────────────────────
+function toggleShr() {
+  const body=$('shr-body'), arrow=$('shr-arrow');
+  const open=body.classList.toggle('open');
+  arrow.classList.toggle('open',open);
 }
 
 // ─── RESTART ─────────────────────────────────────────────────────────────────
