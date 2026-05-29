@@ -715,6 +715,25 @@ const AREAS = [
 let curQ = 0, answers = new Array(14).fill(null), ud = {}, battValue = 40;
 let cachedResults = null;
 
+// ─── DIMENSION MAP (per fråga: e=Energi r=Relationer l=Livsglädje) ──────────
+const DIM_LEVEL = {hög:1.0, tydlig:0.75, måttlig:0.5, låg:0.25, '–':0};
+const Q_DIMS = [
+  {e:'hög',    r:'måttlig', l:'tydlig' },  // Q1  Beslut som kostat dig flera gånger
+  {e:'tydlig', r:'tydlig',  l:'tydlig' },  // Q2  Beslut utan att veta vad du vill ha ut
+  {e:'hög',    r:'tydlig',  l:'hög'    },  // Q3  Hur länge tolererar du det som inte fungerar
+  {e:'hög',    r:'måttlig', l:'hög'    },  // Q4  Hur stor del av dagen bär du det med dig
+  {e:'hög',    r:'måttlig', l:'måttlig'},  // Q5  Kurser/utbildningar utan förändring
+  {e:'tydlig', r:'hög',     l:'tydlig' },  // Q6  Folk förstår inte vad du gör
+  {e:'hög',    r:'hög',     l:'låg'    },  // Q7  Skjuter upp beslut pga andras reaktion
+  {e:'tydlig', r:'hög',     l:'tydlig' },  // Q8  Sätter lägre pris för att undvika reaktion
+  {e:'hög',    r:'hög',     l:'måttlig'},  // Q9  Lämnar möten mer tömd än när du gick in
+  {e:'hög',    r:'hög',     l:'tydlig' },  // Q10 Stannar i samarbete som inte fungerar
+  {e:'tydlig', r:'låg',     l:'hög'    },  // Q11 Kan inte ta mer betalt — vet inte varför
+  {e:'hög',    r:'tydlig',  l:'hög'    },  // Q12 Jobbat mycket utan att det ledde dit du ville
+  {e:'hög',    r:'tydlig',  l:'hög'    },  // Q13 Hur ofta är du i flöde
+  {e:'hög',    r:'hög',     l:'tydlig' },  // Q14 Hur annorlunda är du under press
+];
+
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 function fmt(n) { return Math.round(n).toLocaleString('sv-SE') + ' kr'; }
@@ -943,18 +962,22 @@ function buildResults() {
       if(t.cls==='tag-l') catCount.l++;
     });
   });
+  const catMax={e:0,r:0,l:0};
+  AREAS.forEach(a=>a.tags.forEach(t=>{ if(t.cls==='tag-e')catMax.e++; if(t.cls==='tag-r')catMax.r++; if(t.cls==='tag-l')catMax.l++; }));
+  const catWord=s=>{ if(s<0.25)return'försumbart'; if(s<0.50)return'måttligt'; if(s<0.76)return'tydligt'; return'mycket'; };
   const cats=[
-    {sym:'⚡',name:'Energi',   count:catCount.e, col:'#ffcc00'},
-    {sym:'💚',name:'Relationer',count:catCount.r, col:'#4ade80'},
-    {sym:'🌟',name:'Livsglädje',count:catCount.l, col:'#f97316'},
+    {sym:'⚡',name:'Energi',   count:catCount.e, max:catMax.e, col:'#ffcc00'},
+    {sym:'💚',name:'Relationer',count:catCount.r, max:catMax.r, col:'#4ade80'},
+    {sym:'🌟',name:'Livsglädje',count:catCount.l, max:catMax.l, col:'#f97316'},
   ];
   $('r-category-impact').innerHTML=cats.filter(c=>c.count>0).map(c=>`
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
       <div style="display:flex;align-items:center;gap:0.6rem">
         <span style="font-size:16px">${c.sym}</span>
         <span style="font-size:13px;color:${c.col};font-weight:500">${c.name} påverkas</span>
       </div>
-      <span style="font-family:'DM Mono',monospace;font-size:12px;color:${c.col}">${c.count} av 7 områden</span>
+      <span style="font-size:12px;font-style:italic;color:var(--muted)">${catWord(c.count/c.max)}</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;color:${c.col}">${c.count} av ${c.max} områden</span>
     </div>`).join('');
   const [topIdx,top]=sorted[0];
   const totalCost = areaResults.reduce((s,a)=>s+a.cost,0);
@@ -984,6 +1007,11 @@ function buildResults() {
       const isOmst=ai===1&&(qi===2||qi===3);
       const noteId=`note-${rank}-${qi}`;
       const btnId=`ibtn-${rank}-${qi}`;
+      const fq=Math.max(0.02,(ans-1)/4);
+      const dm=Q_DIMS[qi];
+      const eOp=(DIM_LEVEL[dm.e]*fq).toFixed(2);
+      const rOp=(DIM_LEVEL[dm.r]*fq).toFixed(2);
+      const lOp=(DIM_LEVEL[dm.l]*fq).toFixed(2);
       return `<div class="q-detail">
         <div class="q-detail-q">${q.q}</div>
         <div class="q-detail-row">
@@ -994,6 +1022,11 @@ function buildResults() {
           </div>
         </div>
         <div class="q-mini-bar"><div class="q-mini-fill" style="width:0%" data-w="${ansLevel}%"></div></div>
+        <div style="display:flex;gap:0.45rem;margin:0.3rem 0 0.1rem">
+          <span style="font-size:13px;opacity:${eOp};transition:opacity 0.3s">⚡</span>
+          <span style="font-size:13px;opacity:${rOp};transition:opacity 0.3s">💚</span>
+          <span style="font-size:13px;opacity:${lOp};transition:opacity 0.3s">🌟</span>
+        </div>
         <div class="q-detail-note-wrap" id="${noteId}">
           <div class="assumption-note">${q.note}</div>
         </div>
