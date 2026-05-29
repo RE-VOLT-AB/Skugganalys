@@ -393,7 +393,7 @@
 
     <div class="battery-wrap">
       <div class="battery-header">
-        <label class="input-label" style="margin:0">Energidränage i samarbeten</label>
+        <label class="input-label" style="margin:0">Energinivå i samarbeten</label>
         <span class="battery-pct" id="batt-pct-label">40%</span>
       </div>
       <div class="battery-layout">
@@ -669,7 +669,7 @@ const QS = [
   { ai:2, q:'Hur ofta får du frågor eller reaktioner som visar att folk inte riktigt förstår vad du gör eller vem du gör det för?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Otydlighet utåt kostar i förlorat förtroende och konvertering. Vi estimerar 2% av omsättningen som en konservativ kostnad — ett kvalificerat antagande att en oklar riktning sänker igenkänning och tillit hos potentiella kunder.' },
   { ai:3, q:'Hur ofta skjuter du upp beslut för att slippa hantera någon annans reaktion på det?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Uppskjutna beslut kostar i försenade möjligheter och uteblivna intäkter. 9% motsvarar ungefär en månads försenad potential per år — ett kvalificerat antagande utan direkt extern källa, men logiken är att varje månads fördröjning kostar en tolftedel av årets potential.' },
   { ai:3, q:'Hur ofta sätter du ett lägre pris än du tänkt — för att undvika en obehaglig reaktion?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'15% är ett kvalificerat antagande baserat på att prisglapp på 10–30% förekommer ofta hos entreprenörer som prissätter för att undvika obehag. Oscar har själv dubblerat sitt pris och hjälpt kunder att dubblera sina — utan att det påverkat antalet försäljningar negativt.' },
-  { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Dränerande samarbeten kostar i energi, fokus och återhämtningstid. Vi estimerar 0,8% av omsättningen per dränerande partner som en konservativ kostnad. Batteriet anger andelen av dina partners (max 6 i beräkningen) som du upplever som dränerande.' },
+  { ai:4, q:'Hur ofta lämnar du möten eller interaktioner med dina samarbetspartners och känner dig mer tömd än när du gick in?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Dränerande samarbeten kostar i energi, fokus och återhämtningstid. Vi estimerar 0,8% av omsättningen per dränerande partner som en konservativ kostnad. Batteriet anger hur energigivande dina samarbeten är — ju lägre nivå, desto större andel (max 6 partners) räknar vi som dränerande.' },
   { ai:4, q:'Hur länge brukar det gå från att du förstår att ett samarbete inte fungerar — till att du faktiskt avslutar eller justerar det till något hållbart?', labels:['Några dagar','Några veckor','Någon månad','Flera månader','År'], note:'Varje vecka du stannar i ett samarbete som passerat sitt datum kostar i spilltid — möten, uppföljningar och mental hantering. Vi räknar med 2 timmar per vecka per partner (max 6) som en konservativ uppskattning. Antal veckor hämtas från ditt svar, prissatt med ditt timpris.' },
   { ai:5, q:'Har du någon gång känt att du inte kan ta mer betalt — utan att egentligen veta varför?', labels:['Nästan aldrig','En gång eller två','Ibland','Ganska ofta','Ofta'], note:'När självbilden sätter pristaket istället för marknaden förlorar du en andel av varje affär. Oscar har själv dubblerat sitt pris och hjälpt kunder att dubblera sina — utan att det påverkat antalet försäljningar negativt. Skillnaden mot Q8 är att det här mönstret ofta är omedvetet. Vi estimerar 8% som ett kvalificerat antagande.' },
   { ai:5, q:'Hur ofta känner du att du jobbat mycket — utan att känna att det ledde dit du ville?', labels:['Nästan aldrig','Sällan','Ibland','Ganska ofta','Ofta'], note:'Salesforce 2024 visar att grundare förlorar 1,5 timmar per dag på fokustapp. En del av den förlorade tiden går till arbete som känns produktivt men inte leder dit du vill. Vi estimerar konservativt 1% av omsättningen för den typen av riktningslöst arbete.' },
@@ -862,7 +862,7 @@ function calcCosts(d, ans) {
   qc[6]=d.s*0.09*f(6);
   qc[7]=d.s*0.15*f(7);
   // Samarbeten
-  qc[8]=d.p*(1-d.slE)*d.t*Math.max(0.25, (ans[8]-1))*48;
+  qc[8]=d.s*0.008*Math.min(d.p,6)*(1-d.slE)*f(8);
   qc[9]=Math.min(d.p,6)*d.t*[0,2,4,16,40][ans[9]-1]*2;
   // Jag
   qc[10]=d.s*0.08*f(10);
@@ -881,8 +881,8 @@ function calcCosts(d, ans) {
   const t_dag=[0.05,0.15,0.30,0.50,0.70][ans[3]-1];
   const th_omst   = 8 * t_dag * t_veckor;
   const th_sok5   = d.sub * 48 * 0.20 * Math.max(0.05,(ans[4]-1)/4);
-  const th_sam9   = d.p * (1-d.slE) * Math.max(0.05,(ans[8]-1)/4) * 48;
-  const th_sam10  = d.p * [0,2,4,16,40][ans[9]-1] * 2;
+  const th_sam9   = Math.min(d.p,6) * (1-d.slE) * Math.max(0.05,(ans[8]-1)/4) * 48;
+  const th_sam10  = Math.min(d.p,6) * [0,2,4,16,40][ans[9]-1] * 2;
   const t_ofokus  = Math.round(th_sok5 + th_omst);
   const t_goraom  = Math.round(th_sam9 + th_sam10);
   const t_felrikt = Math.round(d.h * 0.20 * 48 * Math.max(0.05,(ans[10]-1)/4));
